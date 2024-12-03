@@ -1,0 +1,92 @@
+.container-item {
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Narrow scrollbar for Firefox */
+  scrollbar-color: #d6e8eb #2a2a2a; /* Scrollbar color */
+  background-color: rgba(12, 50, 68, 0.562);/* Dark background */
+  border: 1px solid #333; /* Subtle border */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+  font-family: 'Poppins', sans-serif;
+}
+
+.container-item::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+}
+
+.container-item::-webkit-scrollbar-thumb {
+  background-color: #00bcd4; /* Scrollbar color */
+  border-radius: 5px; /* Round scrollbar edges */
+}
+
+.container-item::-webkit-scrollbar-track {
+  background-color: #2a2a2a; /* Scrollbar track color */
+}
+
+.container-item p {
+  display: flex;
+  align-items: center;
+  color: #ffffff; /* White text */
+  font-size: 14px; /* Font size */
+  padding: 10px; /* Padding for text */
+  border-bottom: 1px solid #333; /* Divider between items */
+}
+
+.container-item p:last-child {
+  border-bottom: none; /* Remove border for last item */
+}
+
+.container-item p:nth-child(even) {
+  background-color: rgba(11, 20, 20, 0.425); /* Alternate row background */
+}
+
+.container-item p:hover {
+  background-color: rgba(0, 188, 212, 0.2); /* Highlight on hover */
+  color: #00bcd4; /* Text color on hover */
+  cursor: pointer; /* Pointer cursor */
+}
+
+.Classification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Add space between text and arrow */
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #13161b; /* Darker background for classification */
+  padding: 10px 15px; /* Add padding for a balanced look */
+  border: 1px solid #333; /* Border around classification */
+  border-radius: 5px; /* Slightly rounded corners */
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.Classification:hover {
+  color: #00bcd4; /* Change text color on hover */
+  background-color: #1c1c1c; /* Lighter background on hover */
+}
+
+.Classification::after {
+  content: '▼'; /* Add dropdown arrow */
+  font-size: 12px;
+  color: #ffffff;
+  margin-left: 10px; /* Add spacing between text and arrow */
+  transition: transform 0.3s ease; /* Smooth transition for rotation */
+}
+
+.Classification:hover::after {
+  color: #00bcd4; /* Change arrow color on hover */
+}
+
+.container-item-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 10px 15px;
+  background-color: #101010;
+  border-bottom: 1px solid #333;
+  border-radius: 5px 5px 0 0; /* Round the top corners */
+  text-transform: uppercase;
+}

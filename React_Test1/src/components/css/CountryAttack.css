@@ -1,0 +1,65 @@
+.dropdown-container {
+    background-color: #101010; /* Dark background */
+    border: 1px solid #333; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    width: 200px; /* Adjust width */
+    padding: 10px; /* Inner padding */
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .dropdown-title {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase; /* Capitalized letters */
+    margin-bottom: 10px;
+    border-bottom: 1px solid #333; /* Separator */
+    padding-bottom: 5px;
+  }
+  
+  .dropdown-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    max-height: 150px; /* Limit height */
+    overflow-y: auto; /* Enable scrolling if items overflow */
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center; /* Center vertically */
+    padding: 8px 5px; /* Inner padding */
+    border-radius: 3px; /* Rounded corners for items */
+    transition: background 0.3s ease; /* Smooth hover effect */
+    cursor: pointer; /* Pointer cursor */
+  }
+  
+  .dropdown-item:hover {
+    background-color: #1c1c1c; /* Slightly lighter background on hover */
+  }
+  
+  .flag {
+    font-size: 18px; /* Adjust flag size */
+    margin-right: 10px; /* Space between flag and text */
+  }
+  
+  .country-name {
+    color: #ffffff;
+    font-size: 14px;
+    text-transform: uppercase; /* Capitalized letters */
+  }
+  
+  /* Add scrollbar styling */
+  .dropdown-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .dropdown-list::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
+  }
+  
+  .dropdown-list::-webkit-scrollbar-track {
+    background-color: #1c1c1c;
+  }
+  

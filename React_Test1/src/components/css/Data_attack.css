@@ -1,0 +1,117 @@
+.tableContainer {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Adjust scrollbar size */
+  scrollbar-color: #d6e8eb #2a2a2a;/* Set scrollbar colors */
+  width: 100%; /* Adjust width for better fit */
+  margin:auto; /* Center the table container */
+  background-color: rgba(11, 20, 20, 0.8); /* Darker background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   /* Subtle shadow */
+}
+
+.table {
+  display: flex;
+  flex-direction: column; /* Stack rows vertically */
+}
+
+.header {
+  display: flex;
+  flex-direction: row; /* Horizontal alignment */
+  background-color: #01082D; /* Dark header background */
+  color: white; /* White text for header */
+  font-weight: bold;
+  position: sticky; /* Stick header to top */
+  top: 0;
+  z-index: 1; /* Keep above other content */
+  border-radius: 8px 8px 0 0; /* Round the top corners */
+}
+
+.header > div {
+  flex: 1; /* Equal column width */
+  padding: 12px; /* Add spacing */
+  text-align: center; /* Center text */
+  font-size: 14px; /* Adjust font size */
+  text-transform: uppercase; /* Capitalize text */
+  border-right: 1px solid #333; /* Add subtle column separators */
+}
+
+.header > div:last-child {
+  border-right: none; /* Remove separator from last column */
+}
+
+.data {
+  display: flex;
+  flex-direction: column; /* Stack rows */
+}
+
+.row {
+  display: flex;
+  flex-direction: row; /* Align cells horizontally */
+  background-color: rgba(12, 50, 68, 0.562); /* Dark teal for rows */
+  border-bottom: 1px solid #333; /* Row separators */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.row:nth-child(even) {
+  background-color: rgba(0, 128, 128, 0.3); /* Slightly different for even rows */
+}
+
+.row:hover {
+  background-color: rgba(0, 188, 212, 0.2); /* Highlight row on hover */
+}
+
+.row > div {
+  flex: 1; /* Equal width for cells */
+  padding: 10px; /* Add spacing */
+  text-align: center; /* Center align text */
+  color: #e0e0e0; /* Light text color */
+  font-size: 13px; /* Adjust font size */
+  word-wrap: break-word; /* Handle long text */
+}
+
+.row > div:first-child {
+  font-weight: bold; /* Highlight first column */
+}
+
+.DataAttacker_log {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Add space between text and dropdown icon */
+  font-size: 14px; /* Adjust font size for better visibility */
+  font-weight: bold; /* Make text bold */
+  text-transform: uppercase; /* Capitalize all letters */
+  color: #ffffff; /* White text color */
+  background-color: #13161b; /* Dark background */
+  padding: 10px 10px; /* Add padding for a balanced look */
+  border: 1px solid #333; /* Add a subtle border */
+  border-radius: 5px; /* Slightly rounded corners */
+  font-family: 'Poppins', sans-serif; /* Use a modern font */
+  cursor: pointer; /* Change cursor to pointer */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+   /* Add shadow for depth */
+}
+
+.DataAttacker_log:hover {
+  color: #00bcd4; /* Change text color on hover */
+  background-color: #1c1c1c; /* Slightly lighter background on hover */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Dropdown indicator (arrow) styling */
+.DataAttacker_log::after {
+  content: '▼'; /* Add a dropdown arrow */
+  font-size: 12px; /* Smaller size for the arrow */
+  color: #ffffff; /* White arrow */
+  margin-left: 10px; /* Add space between text and arrow */
+  transition: transform 0.3s ease; /* Smooth transition for rotation */
+}
+
+/* Rotate arrow on hover or focus */
+.DataAttacker_log:hover::after {
+  transform: rotate(180deg); /* Rotate the arrow */
+  color: #00bcd4; /* Match text color on hover */
+}
+
+
