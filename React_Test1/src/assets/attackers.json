@@ -163,5 +163,16 @@
     "region": "Buenos Aires",
     "time": "2024-11-30T02:00:00Z",
     "target": "Ruk-com TH"
+  },
+  {
+    "id": "16",
+    "ip": "10.0.0.8",
+    "latitude": -34.6037,
+    "longitude": -58.3816,
+    "type": "Trojan",
+    "country": "Argentina",
+    "region": "Buenos Aires",
+    "time": "2024-11-30T02:00:00Z",
+    "target": "Ruk-com TH"
   }
 ]

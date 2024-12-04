@@ -50,16 +50,3 @@
   }
   
   /* Add scrollbar styling */
-  .dropdown-list::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .dropdown-list::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 5px;
-  }
-  
-  .dropdown-list::-webkit-scrollbar-track {
-    background-color: #1c1c1c;
-  }
-  
