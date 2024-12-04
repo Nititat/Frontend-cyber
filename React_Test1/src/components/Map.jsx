@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
+import moment from "moment"; // Import Moment.js
 import topojsonData from "../assets/110m.json"; // Import TopoJSON
 import attackersData from "../assets/attackers.json"; // Import attackers JSON
 import "./css/Map.css";
@@ -27,37 +28,7 @@ const Map = () => {
 
     const countries = feature(topojsonData, topojsonData.objects.countries);
 
-    // Add SVG filter for glow effect
-    svg
-      .append("defs")
-      .append("filter")
-      .attr("id", "glow")
-      .append("feGaussianBlur")
-      .attr("stdDeviation", 3)
-      .attr("result", "coloredBlur");
-
-    svg
-      .select("filter")
-      .append("feMerge")
-      .selectAll("feMergeNode")
-      .data(["coloredBlur", "SourceGraphic"])
-      .enter()
-      .append("feMergeNode")
-      .attr("in", (d) => d);
-
-    // Create a tooltip for country names
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("position", "absolute")
-      .style("padding", "8px")
-      .style("background", "rgba(255, 255, 255, 0.9)")
-      .style("color", "#000")
-      .style("border-radius", "5px")
-      .style("visibility", "hidden")
-      .style("font-size", "12px");
-
+    // Draw countries on the map
     svg
       .selectAll("path")
       .data(countries.features)
@@ -66,29 +37,25 @@ const Map = () => {
       .attr("d", path)
       .attr("fill", "#f5f5f5") // Light white/gray for landmass
       .attr("stroke", "#e0e0e0") // Lighter gray for country borders
-      .attr("stroke-width", 0.5)
-      .on("mouseover", (event, d) => {
-        d3.select(event.currentTarget).attr("fill", "#dcdcdc"); // Change color on hover
-
-        // Show tooltip with country name
-        tooltip
-          .style("visibility", "visible")
-          .html(`<strong>Country:</strong> ${d.properties.name}`);
-      })
-      .on("mousemove", (event) => {
-        tooltip
-          .style("top", `${event.pageY - 10}px`)
-          .style("left", `${event.pageX + 10}px`);
-      })
-      .on("mouseout", (event) => {
-        d3.select(event.currentTarget).attr("fill", "#f5f5f5"); // Reset to original color
-        tooltip.style("visibility", "hidden");
-      });
+      .attr("stroke-width", 0.5);
 
     const renderNewMarkers = (newData, selfLocation) => {
       let index = 0; // Start index for batch rendering
       const batchSize = 1; // Number of data points to render at a time
       const interval = 1000; // Interval in milliseconds between batches
+
+      const getColorByType = (type) => {
+        switch (type) {
+          case "Botnet":
+            return "blue";
+          case "Trojan":
+            return "green";
+          case "Self":
+            return "red";
+          default:
+            return "orange";
+        }
+      };
 
       const renderBatch = () => {
         if (index >= newData.length) return;
@@ -98,61 +65,40 @@ const Map = () => {
         batchData.forEach((entry) => {
           if (processedIds.has(entry.id)) return;
 
-          const { latitude, longitude, type, country, id } = entry;
+          const { latitude, longitude, id, type } = entry;
           if (!latitude || !longitude) return; // Skip invalid data
           const [x, y] = projection([longitude, latitude]);
-
-          // Render attacker marker
-          svg
-            .append("circle")
-            .attr("cx", x)
-            .attr("cy", y)
-            .attr("r", 5)
-            .attr(
-              "fill",
-              type === "Botnet"
-                ? "orange"
-                : type === "Trojan"
-                ? "yellow"
-                : type === "Self"
-                ? "red"
-                : "green"
-            )
-            .attr("stroke", "#000")
-            .attr("stroke-width", 1);
-
-          // Add ripple effect
-          svg
-            .append("circle")
-            .attr("cx", x)
-            .attr("cy", y)
-            .attr("r", 0)
-            .attr("fill", "none")
-            .attr("stroke", "red")
-            .attr("stroke-width", 2)
-            .attr("opacity", 1)
-            .transition()
-            .duration(2000)
-            .ease(d3.easeCubicOut)
-            .attr("r", 15)
-            .attr("opacity", 0)
-            .remove();
 
           if (selfLocation) {
             const [selfX, selfY] = projection(selfLocation);
 
+            const lineColor = getColorByType(type);
+
+            // Define a curved path (arc) between the points
+            const curve = d3
+              .line()
+              .x((d) => d[0])
+              .y((d) => d[1])
+              .curve(d3.curveBasis); // Smooth curve
+
+            const midX = (x + selfX) / 2; // Midpoint for curvature
+            const midY = (y + selfY) / 2 - 50; // Elevate midpoint for arc
+
             const lineData = [
               [x, y],
+              [midX, midY],
               [selfX, selfY],
             ];
 
+            // Add animated curved line
             svg
               .append("path")
               .datum(lineData)
-              .attr("d", d3.line())
-              .attr("stroke", "orange")
-              .attr("stroke-width", 2)
+              .attr("d", curve)
+              .attr("stroke", lineColor) // Line color based on type
+              .attr("stroke-width", 1)
               .attr("fill", "none")
+              .attr("stroke-linecap", "round") // Rounded line ends
               .attr("stroke-dasharray", function () {
                 return this.getTotalLength();
               })
@@ -161,8 +107,13 @@ const Map = () => {
               })
               .transition()
               .duration(3000)
-              .ease(d3.easeCubicInOut)
-              .attr("stroke-dashoffset", 0);
+              .ease(d3.easeQuadInOut)
+              .attr("stroke-dashoffset", 0)
+              .style("opacity", 0)
+              .on("end", function () {
+                // Remove the line immediately after animation
+                d3.select(this).remove();
+              });
           }
 
           setProcessedIds((prev) => new Set(prev).add(id));
@@ -177,7 +128,7 @@ const Map = () => {
       }, interval);
     };
 
-    fetch("https://api.findip.net/IP_Address/?token=42343e7777c0479c9360908fb3711252")
+    fetch("http://www.geoplugin.net/json.gp")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -185,14 +136,14 @@ const Map = () => {
         return response.json();
       })
       .then((data) => {
-        const { ip, latitude, longitude, country } = data;
+        const { geoplugin_request, geoplugin_latitude, geoplugin_longitude, geoplugin_countryName } = data;
 
         const selfData = {
           id: "self",
-          ip: ip || "Unknown IP",
-          country: country || "Unknown Country",
-          latitude: parseFloat(latitude) || 0,
-          longitude: parseFloat(longitude) || 0,
+          ip: geoplugin_request || "Unknown IP",
+          country: geoplugin_countryName || "Unknown Country",
+          latitude: parseFloat(geoplugin_latitude) || 0,
+          longitude: parseFloat(geoplugin_longitude) || 0,
           type: "Self",
         };
 

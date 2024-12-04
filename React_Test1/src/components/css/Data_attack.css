@@ -87,7 +87,7 @@
   padding: 10px 10px; /* Add padding for a balanced look */
   border: 1px solid #333; /* Add a subtle border */
   border-radius: 5px; /* Slightly rounded corners */
-  font-family: 'Poppins', sans-serif; /* Use a modern font */
+  font-family: 'Roboto', sans-serif; /* Use a modern font */
   cursor: pointer; /* Change cursor to pointer */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
    /* Add shadow for depth */
