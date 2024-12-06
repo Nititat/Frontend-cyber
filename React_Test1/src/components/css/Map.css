@@ -1,0 +1,56 @@
+/* ปรับขนาดของ SVG ให้เหมาะสมกับ container */
+svg {
+    width: 100%;
+    height: auto;
+    max-width: 100%; /* ป้องกันการขยายเกินขนาดของ container */
+    display: block; /* ลบ spacing ที่ไม่จำเป็น */
+    margin: 0 auto; /* จัดกึ่งกลาง */
+  }
+  
+  /* ตั้งค่า background และการแสดงผลของแผนที่ */
+  svg path {
+    transition: fill 0.3s ease, stroke 0.3s ease; /* เพิ่ม effect */
+  }
+  
+  /* เปลี่ยนสีเมื่อ hover */
+  svg path:hover {
+    fill: #ccc; /* เปลี่ยนสีเมื่อ hover */
+    stroke: #999; /* เปลี่ยนสีของเส้นขอบเมื่อ hover */
+    cursor: pointer;
+  }
+  
+  /* สำหรับ container ของแผนที่ */
+  .map-container {
+    position: relative;
+    width: 100%; /* เต็มความกว้างของหน้าจอ */
+    padding-bottom: 60%; /* อัตราส่วนสำหรับ responsive */
+    overflow: hidden;
+  }
+  
+  /* จัดให้ SVG อยู่ภายใน container */
+  .map-container svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* สำหรับหน้าจอเล็ก */
+  @media (max-width: 768px) {
+    .map-container {
+      padding-bottom: 80%; /* เพิ่มอัตราส่วนให้เหมาะกับจอเล็ก */
+    }
+  
+    svg path {
+      stroke-width: 0.5; /* ลดความหนาของเส้นขอบ */
+    }
+  }
+  
+  /* สำหรับหน้าจอใหญ่มาก */
+  @media (min-width: 1200px) {
+    .map-container {
+      padding-bottom: 50%; /* ลดอัตราส่วนให้เหมาะกับจอใหญ่ */
+    }
+  }
+  
