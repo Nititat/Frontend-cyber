@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import './css/Data_Attack.css';
-// Import attackers.json from src/assets
-import attackersData from '../assets/attackers.json'; // Import attackers JSON
-import $ from 'jquery'; 
-import { setupDataAttackerAnimation } from './JS/data_attackerFun'; 
-// Import ฟังก์ชัน jQuery
+import React, { useEffect, useState } from "react";
+import "./css/Data_Attack.css";
+import axios from "axios";
+import { setupDataAttackerAnimation } from "./JS/data_attackerFun";
 
 function Data_Attack() {
-  const [attackers, setAttackers] = useState(attackersData); // Initialize state with imported data
+  const [attackers, setAttackers] = useState([]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      // Fetch the data again to get updates from attackers.json
-      fetch('/src/assets/attackers.json') // Make sure this path is correct, depending on how your build tool handles assets
-        .then((response) => response.json())
-        .then((data) => {
-          // Sort data by ID in descending order (from high to low)
-          const sortedData = data.sort((a, b) => b.id - a.id);
-          setAttackers(sortedData); // Update state with sorted data
-        })
-        .catch((error) => console.error('Error fetching updated attackers data:', error));
-    }, 1000); // Fetch new data every 1 second
+    const fetchAttackers = async () => {
+      try {
+        // เรียก API ด้วย Axios
+        const response = await axios.get("http://localhost:5000/api/alerts");
+        console.log(response.data); // Debug ข้อมูลที่ได้รับจาก API
+        setAttackers(response.data); // ตั้งค่าข้อมูล attackers จาก response
+      } catch (error) {
+        console.error("Error fetching updated attackers data:", error);
+      }
+    };
 
-    // Cleanup function to clear the interval when the component is unmounted
+    // ดึงข้อมูลครั้งแรก
+    fetchAttackers();
+
+    // ตั้ง Interval เพื่อดึงข้อมูลทุก 1 วินาที
+    const intervalId = setInterval(fetchAttackers, 1000);
+
+    // ล้าง Interval เมื่อ component ถูก unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -31,27 +33,54 @@ function Data_Attack() {
   }, []);
 
   return (
-    <div className='On_container'>
-      <p className='DataAttacker_log'>Data_Attacker_Log</p>
+    <div className="On_container">
+      <p className="DataAttacker_log">Data_Attacker_Log</p>
       <div className="tableContainer">
         <div className="table">
           <div className="header">
-            <div className='fa ID'>ID</div>
-            <div className='fa time'>Time</div>
-            <div className='fa attack_type'>Attack type</div>
-            <div className='fa attack_country'>Attack country</div>
-            <div className='fa target_My_location'>Target Server</div>
+            <div className="fa timestamp">Timestamp</div>
+            <div className="fa description">Attack Type</div>
+            <div className="fa country_name">Attack Country</div>
+            <div className="fa agent_id">Agent ID</div>
+            <div className="fa agent_ip">Agent IP</div>
+            <div className="fa target_server">Target Server</div>
           </div>
           <div className="data">
-            {attackers.map((attacker, index) => (
-              <div key={index} className="row">
-                <div className="fa ID">{attacker.id}</div>
-                <div className="fa time">{attacker.time || 'N/A'}</div>
-                <div className="fa attack_type">{attacker.type || 'N/A'}</div>
-                <div className="fa attack_country">{attacker.country}</div>
-                <div className="fa target_My_location">{attacker.target || 'N/A'}</div>
-              </div>
-            ))}
+            {attackers.map((attacker, index) => {
+              // ตรวจสอบการมีอยู่ของข้อมูลในแต่ละฟิลด์
+              const source = attacker._source || {};
+              const geoLocation = source.GeoLocation || {};
+              const agent = source.agent || {};
+              const rule = source.rule || {};
+
+              return (
+                <div key={index} className="row">
+                  {/* Timestamp */}
+                  <div className="fa timestamp">
+                    {source["@timestamp"] || "N/A"}
+                  </div>
+
+                  {/* Attack Description */}
+                  <div className="fa description">
+                    {rule.description || "N/A"}
+                  </div>
+
+                  {/* GeoLocation: Country */}
+                  <div className="fa country_name">
+                    {geoLocation.country_name || "N/A"}
+                  </div>
+
+                  {/* Agent ID */}
+                  <div className="fa agent_id">{agent.id || "N/A"}</div>
+
+                  {/* Agent IP */}
+                  <div className="fa agent_ip">{agent.ip || "N/A"}</div>
+
+                  {/* Target Server */}
+                  <div className="fa target_server">{agent.name || "N/A"}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

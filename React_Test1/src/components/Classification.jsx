@@ -1,77 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import './css/Classification.css';
-import $ from 'jquery'; 
-import { setupClassificationAnimation } from './JS/classification_Fun'; 
-// Import ฟังก์ชัน jQuery
-
+import axios from 'axios'; // ใช้ Axios สำหรับการดึงข้อมูล
+import { setupClassificationAnimation } from './JS/classification_Fun';
 
 function Classification() {
-  const [attackCounts, setAttackCounts] = useState({
-    DDoS: 0,
-    "SQL Injection": 0,
-    Phishing: 0,
-    Malware: 0,
-    Ransomware: 0,
-    Unknown: 0,
-  });
+  const [attackCounts, setAttackCounts] = useState([]); // เก็บข้อมูลประเภทและจำนวนการโจมตี
 
   useEffect(() => {
-    const fetchAttackers = () => {
-      fetch('/src/assets/attackers.json')
-        .then((response) => response.json())
-        .then((data) => {
-          const initialCounts = {
-            DDoS: 0,
-            "SQL Injection": 0,
-            Phishing: 0,
-            Malware: 0,
-            Ransomware: 0,
-            Unknown: 0,
-          };
+    const fetchAttackers = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/alerts'); // ดึงข้อมูลจาก API
+        const data = response.data;
 
-          const counts = data.reduce((acc, attacker) => {
-            const type = attacker.type || "Unknown";
-            if (acc[type] !== undefined) {
-              acc[type] += 1;
-            } else {
-              acc.Unknown += 1;
-            }
-            return acc;
-          }, initialCounts);
+        // คำนวณจำนวนการโจมตีแต่ละประเภท
+        const counts = data.reduce((acc, attacker) => {
+          const description = attacker._source?.rule?.description || "Unknown"; // ดึงข้อมูล description
+          if (acc[description]) {
+            acc[description] += 1; // เพิ่มจำนวนในประเภทที่มีอยู่แล้ว
+          } else {
+            acc[description] = 1; // สร้างประเภทใหม่ใน accumulator
+          }
+          return acc;
+        }, {});
 
-          setAttackCounts(counts);
-        })
-        .catch((error) => console.error('Error fetching attackers data:', error));
+        // แปลง Object เป็น Array และเรียงลำดับจากมากไปน้อย
+        const sortedCounts = Object.entries(counts)
+          .map(([description, count]) => ({ description, count }))
+          .sort((a, b) => b.count - a.count); // เรียงจากมากไปน้อย
+
+        setAttackCounts(sortedCounts); // อัปเดต state
+      } catch (error) {
+        console.error('Error fetching attackers data:', error);
+      }
     };
 
-    fetchAttackers();
+    fetchAttackers(); // เรียก API ครั้งแรก
 
+    // ตั้ง Interval เพื่อดึงข้อมูลทุก 1 วินาที
     const intervalId = setInterval(fetchAttackers, 1000);
 
+    // ล้าง Interval เมื่อ component ถูก unmount
     return () => clearInterval(intervalId);
   }, []);
 
-
-  
   // เรียกฟังก์ชัน Animation จาก classification.js
   useEffect(() => {
     setupClassificationAnimation();
   }, []);
-
-
-
 
   return (
     <div>
       <div className="border">
         <p className="Classification">Classification</p>
         <div className="container-item">
-            <p>DDoS: {attackCounts.DDoS}</p>
-            <p>SQL Injection: {attackCounts["SQL Injection"]}</p>
-            <p>Phishing: {attackCounts.Phishing}</p>
-            <p>Malware: {attackCounts.Malware}</p>
-            <p>Ransomware: {attackCounts.Ransomware}</p>
-            <p>Unknown: {attackCounts.Unknown}</p>
+          {attackCounts.map((attack, index) => (
+            <p key={index}>
+              {attack.description}: {attack.count}
+            </p>
+          ))}
         </div>
       </div>
     </div>
