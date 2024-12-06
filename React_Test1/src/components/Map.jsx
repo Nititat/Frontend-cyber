@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
-import moment from "moment"; // Import Moment.js
 import topojsonData from "../assets/110m.json"; // Import TopoJSON
 import attackersData from "../assets/attackers.json"; // Import attackers JSON
 import "./css/Map.css";
@@ -47,16 +46,15 @@ const Map = () => {
         const getColorByType = (type) => {
           switch (type) {
             case "Botnet":
-              return "#0066cc"; // Bright blue
+              return "#0099ff"; // Sky blue
             case "Trojan":
-              return "#28a745"; // Fresh green
+              return "#33cc33"; // Bright green
             case "Self":
-              return "#ff5733"; // Vibrant red
+              return "#ff4500"; // Orange-red
             default:
-              return "#f39c12"; // Warm golden yellow
+              return "#ffc107"; // Bright yellow
           }
         };
-        
       
         const renderBatch = () => {
           if (index >= newData.length) return;
@@ -93,61 +91,62 @@ const Map = () => {
       
               // Add animated curved line
               const path = svg
-                .append("path")
-                .datum(lineData)
-                .attr("d", curve)
-                .attr("stroke", lineColor) // Line color based on type
-                .attr("stroke-width", 1)
-                .attr("fill", "none")
-                .attr("stroke-linecap", "round") // Rounded line ends
-                .attr("stroke-dasharray", function () {
-                  return this.getTotalLength();
-                })
-                .attr("stroke-dashoffset", function () {
-                  return this.getTotalLength();
-                })
-                .transition()
-                .duration(3000) // Draw the path over 3 seconds
-                .ease(d3.easeQuadInOut)
-                .attr("stroke-dashoffset", 0)
-                .duration(2000) // Fade out after animation
-                .style("opacity", 0)
+              .append("path")
+              .datum(lineData)
+              .attr("d", curve)
+              .attr("stroke", lineColor) // Line color based on type
+              .attr("stroke-width", 1)
+              .attr("fill", "none")
+              .attr("stroke-linecap", "round") // Rounded line ends
+              .attr("stroke-dasharray", function () {
+                return this.getTotalLength();
+              })
+              .attr("stroke-dashoffset", function () {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(3000) // Draw the path over 3 seconds
+              .ease(d3.easeQuadInOut)
+              .attr("stroke-dashoffset", 0)
+              .duration(2000) // Fade out after animation
+              .style("opacity", 0)
                 .on("end", function () {
-                  d3.select(this).remove(); // Remove the line after animation ends
+                  // Add explosion effect at target location
+                  svg
+                    .append("circle")
+                    .attr("cx", selfX)
+                    .attr("cy", selfY)
+                    .attr("r", 0)
+                    .attr("fill", lineColor)
+                    .attr("opacity", 0.8)
+                    .transition()
+                    .duration(500)
+                    .attr("r", 10) // Expand radius
+                    .attr("opacity", 0) // Fade out
+                    .on("end", function () {
+                      d3.select(this).remove(); // Remove explosion circle
+                    });
+      
+                  d3.select(this).remove(); // Remove line
                 });
       
               // Add attacker (source) point
-              const attackerPoint = svg
+              svg
                 .append("circle")
                 .attr("cx", x)
                 .attr("cy", y)
                 .attr("r", 2)
-                .attr("fill", "red") // Color for attacker point
+                .attr("fill", "red")
                 .attr("opacity", 0.8)
                 .transition()
                 .duration(3000) // Same duration as line animation
                 .style("opacity", 0)
                 .on("end", function () {
-                  d3.select(this).remove(); // Remove attacker point after animation
+                  d3.select(this).remove(); // Remove attacker point
                 });
       
-              // Add target (destination) point
-              const targetPoint = svg
-                .append("circle")
-                .attr("cx", selfX)
-                .attr("cy", selfY)
-                .attr("r", 2)
-                .attr("fill", "blue") // Color for target point
-                .attr("opacity", 0.8)
-                .transition()
-                .duration(3000) // Same duration as line animation
-                .style("opacity", 0)
-                .on("end", function () {
-                  d3.select(this).remove(); // Remove target point after animation
-                });
+              setProcessedIds((prev) => new Set(prev).add(id)); // Mark ID as processed
             }
-      
-            setProcessedIds((prev) => new Set(prev).add(id)); // Mark the current ID as processed
           });
       
           index += batchSize;
@@ -155,51 +154,44 @@ const Map = () => {
       
         const intervalId = setInterval(() => {
           renderBatch();
-          if (index >= newData.length) clearInterval(intervalId); // Clear the interval when done
+          if (index >= newData.length) clearInterval(intervalId);
         }, interval);
       };
       
 
-      fetch("http://www.geoplugin.net/json.gp")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Ensure the data has the required fields before using them
-        const {
-          geoplugin_request,       // IP address of the client
-          geoplugin_latitude,      // Latitude
-          geoplugin_longitude,     // Longitude
-          geoplugin_countryName,   // Country Name
-        } = data;
+    // Fetch user's location
+    const fetchLocation = async () => {
+      try {
+        const response = await fetch("http://ip-api.com/json/");
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        
+        const { lat, lon, country } = data;
     
-        // Create the selfData object with the available data
         const selfData = {
           id: "self", // Static ID for the user's location
-          ip: geoplugin_request || "Unknown IP", // Fallback if the IP is missing
-          country: geoplugin_countryName || "Unknown Country", // Fallback if the country is missing
-          latitude: parseFloat(geoplugin_latitude) || 0, // Parse latitude, default to 0 if invalid
-          longitude: parseFloat(geoplugin_longitude) || 0, // Parse longitude, default to 0 if invalid
-          type: "Self", // Static type for the user's location
+          latitude: parseFloat(lat) || 0,
+          longitude: parseFloat(lon) || 0,
+          country: country || "Unknown Country",
+          type: "Self",
         };
     
-        // Add this selfData to the attackersData array
-        attackersData.push(selfData);
+        // Check if selfData already exists in attackersData
+        const isSelfDataPresent = attackersData.some((data) => data.id === "self");
+        if (!isSelfDataPresent) {
+          attackersData.push(selfData);
+        }
     
-        // Call renderNewMarkers to render the new markers, passing the location coordinates
         renderNewMarkers(attackersData, [selfData.longitude, selfData.latitude]);
-      })
-      .catch((error) => {
-        // Handle errors in fetching the data (e.g., network issue, invalid response)
+      } catch (error) {
         console.error("Error fetching location:", error);
-    
-        // In case of failure, render the markers without the self location
         renderNewMarkers(attackersData, null);
-      });
+      }
+    };
     
+    fetchLocation();
+    
+   
   }, [processedIds]);
 
   return <svg ref={mapRef}></svg>;

@@ -1,5 +1,5 @@
 .tableContainer {
-  max-height: 400px; /* Adjust the height as needed */
+  max-height: 250px; /* Adjust the height as needed */
   overflow-y: auto; /* Enable vertical scrolling */
   scrollbar-width: thin; /* Adjust scrollbar size */
   scrollbar-color: #d6e8eb #2a2a2a;/* Set scrollbar colors */
@@ -83,9 +83,9 @@
   font-weight: bold; /* Make text bold */
   text-transform: uppercase; /* Capitalize all letters */
   color: #ffffff; /* White text color */
-  background-color: #13161b; /* Dark background */
+  background-color: rgba(0, 128, 128, 0.3); /* Dark background */
   padding: 10px 10px; /* Add padding for a balanced look */
-  border: 1px solid #333; /* Add a subtle border */
+  /* Add a subtle border */
   border-radius: 5px; /* Slightly rounded corners */
   font-family: 'Roboto', sans-serif; /* Use a modern font */
   cursor: pointer; /* Change cursor to pointer */

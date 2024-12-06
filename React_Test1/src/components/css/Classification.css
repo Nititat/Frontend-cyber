@@ -54,11 +54,13 @@
   justify-content: space-between; /* Add space between text and arrow */
   font-size: 14px;
   font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
   color: #ffffff;
-  background-color: #13161b; /* Darker background for classification */
+  background-color: rgba(0, 128, 128, 0.3); /* Darker background for classification */
   padding: 10px 15px; /* Add padding for a balanced look */
-  border: 1px solid #333; /* Border around classification */
-  border-radius: 5px; /* Slightly rounded corners */
+   /* Border around classification */
+  border-radius: 5px; /* Slight758694ly rounded corners */
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow */
 }
