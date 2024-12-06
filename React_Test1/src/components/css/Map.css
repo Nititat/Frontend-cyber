@@ -13,11 +13,7 @@ svg {
   }
   
   /* เปลี่ยนสีเมื่อ hover */
-  svg path:hover {
-    fill: #ccc; /* เปลี่ยนสีเมื่อ hover */
-    stroke: #999; /* เปลี่ยนสีของเส้นขอบเมื่อ hover */
-    cursor: pointer;
-  }
+
   
   /* สำหรับ container ของแผนที่ */
   .map-container {
@@ -36,10 +32,12 @@ svg {
     height: 100%;
   }
   
-  /* สำหรับหน้าจอเล็ก */
-  @media (max-width: 768px) {
+  /* Responsive Design */
+  
+  /* สำหรับหน้าจอขนาดเล็กมาก */
+  @media (max-width: 576px) {
     .map-container {
-      padding-bottom: 80%; /* เพิ่มอัตราส่วนให้เหมาะกับจอเล็ก */
+      padding-bottom: 90%; /* เพิ่มอัตราส่วนให้เหมาะกับหน้าจอมือถือเล็ก */
     }
   
     svg path {
@@ -47,10 +45,47 @@ svg {
     }
   }
   
-  /* สำหรับหน้าจอใหญ่มาก */
-  @media (min-width: 1200px) {
+  /* สำหรับหน้าจอขนาดเล็ก */
+  @media (max-width: 768px) {
+    .map-container {
+      padding-bottom: 80%; /* เพิ่มอัตราส่วนให้เหมาะกับหน้าจอเล็ก */
+    }
+  
+    svg path {
+      stroke-width: 0.6; /* ลดความหนาของเส้นขอบ */
+    }
+  }
+  
+  /* สำหรับหน้าจอขนาดกลาง */
+  @media (max-width: 1024px) {
+    .map-container {
+      padding-bottom: 70%; /* ปรับอัตราส่วนให้เหมาะกับหน้าจอขนาดกลาง */
+    }
+  
+    svg path {
+      stroke-width: 0.8; /* เพิ่มความหนาของเส้นขอบเล็กน้อย */
+    }
+  }
+  
+  /* สำหรับหน้าจอขนาดใหญ่ */
+  @media (max-width: 1440px) {
+    .map-container {
+      padding-bottom: 60%; /* ใช้อัตราส่วนปกติ */
+    }
+  
+    svg path {
+      stroke-width: 1; /* ขนาดเส้นขอบมาตรฐาน */
+    }
+  }
+  
+  /* สำหรับหน้าจอขนาดใหญ่มาก */
+  @media (min-width: 1920px) {
     .map-container {
       padding-bottom: 50%; /* ลดอัตราส่วนให้เหมาะกับจอใหญ่ */
+    }
+  
+    svg path {
+      stroke-width: 1.5; /* เพิ่มความหนาของเส้นขอบ */
     }
   }
   
