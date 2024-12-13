@@ -10,6 +10,7 @@ svg {
   /* ตั้งค่า background และการแสดงผลของแผนที่ */
   svg path {
     transition: fill 0.3s ease, stroke 0.3s ease; /* เพิ่ม effect */
+    
   }
   
   /* เปลี่ยนสีเมื่อ hover */
@@ -84,8 +85,26 @@ svg {
       padding-bottom: 50%; /* ลดอัตราส่วนให้เหมาะกับจอใหญ่ */
     }
   
-    svg path {
-      stroke-width: 1.5; /* เพิ่มความหนาของเส้นขอบ */
-    }
+    
   }
   
+ /* Style for Text on the Map */
+svg text {
+  fill: #FFFFFF; /* สีขาว */
+  font-family: "Montserrat", Arial, sans-serif; /* ฟอนต์ที่ดูทันสมัย */
+  font-weight: bold; /* ทำให้ข้อความหนาขึ้น */
+  text-shadow: 1px 1px 2px rgb(0, 0, 0); /* เงาเพื่อให้อ่านง่าย */
+  pointer-events: none; /* ป้องกันการกดหรือคลิกข้อความ */
+}
+
+/* เพิ่มระยะห่างระหว่างข้อความและตำแหน่ง */
+svg text.thailand {
+  transform: translate(5px, -5px);
+   /* ขยับตำแหน่งข้อความ */
+}
+
+svg text.singapore {
+  transform: translate(5px, 5px); /* ขยับตำแหน่งข้อความ */
+}
+
+

@@ -28,6 +28,7 @@
 .container-item p {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #ffffff; /* White text */
   font-size: 14px; /* Font size */
   padding: 10px; /* Padding for text */
@@ -92,3 +93,8 @@
   border-radius: 5px 5px 0 0; /* Round the top corners */
   text-transform: uppercase;
 }
+
+
+
+
+
