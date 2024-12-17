@@ -863,7 +863,7 @@ def get_mitre_techniques_today():
                 "mitre_techniques": {
                     "terms": {
                         "field": "rule.mitre.technique",
-                        "size": 20
+                        "size": 100
                     }
                 }
             }
