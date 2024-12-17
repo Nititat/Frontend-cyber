@@ -95,6 +95,53 @@
 }
 
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container-item {
+    max-height: 200px; /* Reduce max height on tablets */
+  }
 
+  .container-item p {
+    flex-direction: column; /* Stack text vertically */
+    font-size: 12px; /* Reduce font size */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .Classification {
+    font-size: 12px; /* Reduce font size for classification */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .container-item-header {
+    font-size: 14px; /* Reduce header size */
+    padding: 8px 10px; /* Adjust padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .container-item {
+    max-height: unset; /* Remove height restriction for small screens */
+    box-shadow: none; /* Remove shadow for minimal look */
+  }
+
+  .container-item p {
+    font-size: 11px; /* Smaller font size */
+    padding: 6px; /* Reduce padding further */
+  }
+
+  .Classification {
+    font-size: 11px; /* Adjust classification font size */
+    padding: 6px; /* Adjust padding */
+  }
+
+  .container-item-header {
+    font-size: 12px; /* Smaller font for header */
+    padding: 6px 8px; /* Adjust padding */
+  }
+
+  .container-item::-webkit-scrollbar {
+    width: 5px; /* Narrow scrollbar for smaller screens */
+  }
+}
 
 

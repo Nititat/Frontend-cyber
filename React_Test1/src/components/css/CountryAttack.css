@@ -16,7 +16,7 @@
   background: #262D47;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 390px;
   border: 2px solid #30354E;
   scroll-behavior: smooth;
 }
@@ -31,30 +31,32 @@
 }
 
 /* Flag item styling */
+/* Flag item styling - layout adjustment */
 .flag-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  flex-direction: row; /* รูปและข้อความเรียงตามแนวนอน */
+  align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+  justify-content: flex-start; /* รูปอยู่ซ้ายสุด */
   background: linear-gradient(145deg, #30354E, #3a4059);
-  padding: 15px;
+  padding: 10px;
   border-radius: 12px;
   transition: transform 0.3s, box-shadow 0.3s;
-  max-width: 150px; /* Restrict maximum width */
+  max-width: 250px; /* ปรับความกว้างให้รองรับ layout ใหม่ */
+  gap: 10px; /* เพิ่มระยะห่างระหว่างรูปภาพกับข้อความ */
 }
 
 .flag-item:hover {
-  transform: translateY(-8px);
+  transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Flag image styling */
+/* Flag image styling - adjust for smaller size */
 .flag-img {
-  width: 60px;
-  height: auto;
+  width: 40px;
+  height: 30px;
   border-radius: 8px;
-  margin-bottom: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0; /* ลบ margin-bottom ที่เคยมี */
 }
 
 /* Flag count styling */
@@ -63,8 +65,8 @@
   color: #f5f5f5;
   font-weight: bold;
   font-family: 'Roboto', sans-serif;
-  margin-top: 5px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  margin: 0; /* เอา margin-top ออก */
 }
 
 /* Scrollbar styling */
@@ -135,3 +137,5 @@
     font-size: 10px;
   }
 }
+
+

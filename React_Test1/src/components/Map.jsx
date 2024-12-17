@@ -31,19 +31,40 @@ const Map = () => {
 
   // Colors for attack types
   const attackTypeColors = {
-    "Web server 400 error code.": "#FFD700", // Bright Gold
-    "CMS (WordPress or Joomla) login attempt.": "#2ECC71", // Emerald Green
-    "Botnet Activity Detected and Blocked": "#E74C3C", // Bright Red
-    "High amount of POST requests in a small period of time (likely bot).": "#F39C12", // Sunset Orange
-    "Multiple web server 400 error codes from same source ip.": "#E67E22", // Deep Orange
-    "WAF Alert: Request Blocked.": "#1ABC9C", // Light Turquoise
-    "pure-ftpd: Multiple connection attempts from same source.": "#3498DB", // Sky Blue
-    "pure-ftpd: FTP Authentication success.": "#16A085", // Teal Green
-    "Query cache denied (probably config error).": "#9B59B6", // Amethyst Purple
-    "Simple shell.php command execution.": "#2C3E50", // Navy Blue
-    "SQL injection attempt.": "#27AE60", // Forest Green
-    Unknown: "#F1C40F", // Bright Yellow
+    "Web server 400 error code.": "#FF5733", // Orange Red
+    "CMS (WordPress or Joomla) login attempt.": "#33FF57", // Bright Green
+    "Botnet Activity Detected and Blocked": "#3357FF", // Bright Blue
+    "High amount of POST requests in a small period of time (likely bot).": "#FF33A8", // Pink
+    "Multiple web server 400 error codes from same source ip.": "#A833FF", // Purple
+    "WAF Alert: Request Blocked.": "#33FFF3", // Cyan
+    "pure-ftpd: Multiple connection attempts from same source.": "#FFC300", // Yellow Gold
+    "pure-ftpd: FTP Authentication success.": "#C70039", // Crimson Red
+    "Query cache denied (probably config error).": "#900C3F", // Dark Red
+    "Simple shell.php command execution.": "#581845", // Dark Purple
+    "SQL injection attempt.": "#DAF7A6", // Light Green
+    "Vulnerability Scanning": "#FF7F50", // Coral
+    "Password Guessing": "#87CEEB", // Sky Blue
+    "Stored Data Manipulation": "#6495ED", // Cornflower Blue
+    "Exploit Public-Facing Application": "#FFD700", // Bright Gold
+    "Process Injection": "#FF4500", // Orange Red
+    "Data Destruction": "#2E8B57", // Sea Green
+    "File Deletion": "#20B2AA", // Light Sea Green
+    "Valid Accounts": "#7B68EE", // Medium Slate Blue
+    "SSH": "#6A5ACD", // Slate Blue
+    "File and Directory Discovery": "#00CED1", // Dark Turquoise
+    "Brute Force": "#FF6347", // Tomato
+    "Endpoint Denial of Service": "#4682B4", // Steel Blue
+    "Network Denial of Service": "#32CD32", // Lime Green
+    "JavaScript": "#BA55D3", // Medium Orchid
+    "Sudo and Sudo Caching": "#F08080", // Light Coral
+    "Remote Services": "#48D1CC", // Medium Turquoise
+    "Exploitation for Privilege Escalation": "#FF1493", // Deep Pink
+    "Exploitation of Remote Services": "#00FF7F", // Spring Green
+    "Exploitation for Client Execution": "#8B0000", // Dark Red
+    "Web Shell": "#CD853F", // Peru
+      Unknown: "#B0C4DE" // Light Steel Blue
 };
+
 
   
 
@@ -155,104 +176,104 @@ const Map = () => {
     const svg = d3.select(mapRef.current);
 
     const drawInvertedCurvedLine = async (data) => {
-        const projection = d3
-            .geoNaturalEarth1()
-            .scale(150)
-            .translate([960 / 2, 500 / 2]);
+      const projection = d3
+          .geoNaturalEarth1()
+          .scale(150)
+          .translate([960 / 2, 500 / 2]);
 
-        const curvedLine = d3
-            .line()
-            .curve(d3.curveBasis)
-            .x((d) => projection(d)[0])
-            .y((d) => projection(d)[1]);
+      const curvedLine = d3
+          .line()
+          .curve(d3.curveBasis)
+          .x((d) => projection(d)[0])
+          .y((d) => projection(d)[1]);
 
-        // Group data by source and target coordinates
-        const groupedAttacks = d3.group(data, d => `${d.longitude},${d.latitude}-${d.targetLongitude},${d.targetLatitude}`);
+      // Group data by source and target coordinates
+      const groupedAttacks = d3.group(data, d => `${d.longitude},${d.latitude}-${d.targetLongitude},${d.targetLatitude}`);
 
-        for (const [key, attacks] of groupedAttacks) {
-            const { longitude, latitude, targetLatitude, targetLongitude } = attacks[0];
+      for (const [key, attacks] of groupedAttacks) {
+          const { longitude, latitude, targetLatitude, targetLongitude } = attacks[0];
 
-            if (!longitude || !latitude) continue;
+          if (!longitude || !latitude) continue;
 
-            const source = [longitude, latitude];
-            const target = [targetLongitude, targetLatitude];
-            const midPoint = [
-                (longitude + targetLongitude) / 2,
-                (latitude + targetLatitude) / 2 + 23, // Adjust for "inverted" arc
-            ];
+          const source = [longitude, latitude];
+          const target = [targetLongitude, targetLatitude];
+          const midPoint = [
+              (longitude + targetLongitude) / 2,
+              (latitude + targetLatitude) / 2 + 23, // Adjust for "inverted" arc
+          ];
 
-            for (let i = 0; i < attacks.length; i++) {
-                const attack = attacks[i];
-                const attackColor = attackTypeColors[attack.type] || "#FFBA08";
+          for (let i = 0; i < attacks.length; i++) {
+              const attack = attacks[i];
+              const attackColor = attackTypeColors[attack.type] || "#FFBA08";
 
-                const offset = i * 2; // Offset for duplicate lines
+              const offset = i * 2; // Offset for duplicate lines
 
-                // Adjust midpoint to create separation for duplicate lines
-                const adjustedMidPoint = [
-                    midPoint[0],
-                    midPoint[1] + offset,
-                ];
+              // Adjust midpoint to create separation for duplicate lines
+              const adjustedMidPoint = [
+                  midPoint[0],
+                  midPoint[1] + offset,
+              ];
 
-                // Add source radiating circle
-                svg
-                    .append("circle")
-                    .attr("cx", projection(source)[0])
-                    .attr("cy", projection(source)[1])
-                    .attr("r", 0)
-                    .attr("fill", attackColor)
-                    .attr("opacity", 0.7)
-                    .transition()
-                    .duration(800)
-                    .attr("r", 10)
-                    .attr("opacity", 0)
-                    .remove();
+              // Add source radiating circle
+              svg
+                  .append("circle")
+                  .attr("cx", projection(source)[0])
+                  .attr("cy", projection(source)[1])
+                  .attr("r", 0)
+                  .attr("fill", attackColor)
+                  .attr("opacity", 0.7)
+                  .transition()
+                  .duration(800)
+                  .attr("r", 10)
+                  .attr("opacity", 0)
+                  .remove();
 
-                // Draw the curved line
-                const path = svg
-                    .append("path")
-                    .datum([source, adjustedMidPoint, target])
-                    .attr("d", curvedLine)
-                    .attr("fill", "none")
-                    .attr("stroke", attackColor)
-                    .attr("stroke-width", 2)
-                    .attr("stroke-dasharray", function () {
-                        return this.getTotalLength();
-                    })
-                    .attr("stroke-dashoffset", function () {
-                        return this.getTotalLength();
-                    })
-                    .transition()
-                    .duration(1500)
-                    .ease(d3.easeLinear)
-                    .attr("stroke-dashoffset", 0)
-                    .on("end", function () {
-                        d3.select(this)
-                            .transition()
-                            .duration(800)
-                            .attr("stroke-dashoffset", -this.getTotalLength()) // Remove the stroke gradually from the start
-                            .style("opacity", 0)
-                            .remove();
-                    });
+              // Draw the curved line
+              const path = svg
+                  .append("path")
+                  .datum([source, adjustedMidPoint, target])
+                  .attr("d", curvedLine)
+                  .attr("fill", "none")
+                  .attr("stroke", attackColor)
+                  .attr("stroke-width", 2)
+                  .attr("stroke-dasharray", function () {
+                      return this.getTotalLength();
+                  })
+                  .attr("stroke-dashoffset", function () {
+                      return this.getTotalLength();
+                  })
+                  .transition()
+                  .duration(1500)
+                  .ease(d3.easeLinear)
+                  .attr("stroke-dashoffset", 0)
+                  .on("end", function () {
+                      d3.select(this)
+                          .transition()
+                          .duration(800)
+                          .attr("stroke-dashoffset", -this.getTotalLength()) // Remove the stroke gradually from the start
+                          .style("opacity", 0)
+                          .remove();
+                  });
 
-                // Add target radiating circle
-                svg
-                    .append("circle")
-                    .attr("cx", projection(target)[0])
-                    .attr("cy", projection(target)[1])
-                    .attr("r", 0)
-                    .attr("fill", attackColor)
-                    .attr("opacity", 0.7)
-                    .transition()
-                    .duration(800)
-                    .attr("r", 10)
-                    .attr("opacity", 0)
-                    .remove();
+              // Add target radiating circle
+              svg
+                  .append("circle")
+                  .attr("cx", projection(target)[0])
+                  .attr("cy", projection(target)[1])
+                  .attr("r", 0)
+                  .attr("fill", attackColor)
+                  .attr("opacity", 0.7)
+                  .transition()
+                  .duration(800)
+                  .attr("r", 10)
+                  .attr("opacity", 0)
+                  .remove();
 
-                // Add a delay between animations
-                await new Promise((resolve) => setTimeout(resolve, 200));
-            }
-        }
-    };
+              // Add a delay between animations
+              await new Promise((resolve) => setTimeout(resolve, 200));
+          }
+      }
+  };
 
     // Draw the animations with inverted arcs
     drawInvertedCurvedLine(attackData);

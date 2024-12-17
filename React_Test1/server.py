@@ -890,5 +890,8 @@ def get_mitre_techniques_today():
 
 
 
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -115,3 +115,38 @@
 }
 
 
+@media (max-width: 768px) {
+  .header, .row {
+    flex-direction: column; /* Stack columns vertically */
+  }
+
+  .header > div, .row > div {
+    padding: 8px;
+    text-align: left; /* Align text to left */
+    font-size: 12px; /* Reduce font size */
+  }
+
+  .header > div {
+    background-color: #01082D;
+    color: white;
+    border-right: none;
+    border-bottom: 1px solid #333;
+  }
+
+  .tableContainer {
+    max-height: unset; /* Remove height restriction */
+  }
+}
+
+@media (max-width: 480px) {
+  .header > div, .row > div {
+    font-size: 10px; /* Further reduce font size */
+    padding: 5px; /* Adjust padding for smaller screens */
+  }
+
+  .DataAttacker_log {
+    font-size: 12px; /* Smaller font for log */
+    padding: 8px; /* Reduce padding */
+  }
+}
+
