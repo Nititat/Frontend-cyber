@@ -15,7 +15,7 @@
   align-items: center;
   padding: 15px 30px;
   background: linear-gradient(90deg, #1B213B, #263859);
-
+  height: 65px;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: sticky;

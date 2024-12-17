@@ -67,8 +67,8 @@
 }
 
 .Classification:hover {
-  color: #00bcd4; /* Change text color on hover */
-  background-color: #1c1c1c; /* Lighter background on hover */
+  color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);/* Lighter background on hover */
 }
 
 .Classification::after {

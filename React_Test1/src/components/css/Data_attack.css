@@ -94,8 +94,8 @@
 }
 
 .DataAttacker_log:hover {
-  color: #00bcd4; /* Change text color on hover */
-  background-color: #1c1c1c; /* Slightly lighter background on hover */
+  color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
   transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
 
@@ -108,11 +108,7 @@
   transition: transform 0.3s ease; /* Smooth transition for rotation */
 }
 
-/* Rotate arrow on hover or focus */
-.DataAttacker_log:hover::after {
-  transform: rotate(180deg); /* Rotate the arrow */
-  color: #00bcd4; /* Match text color on hover */
-}
+
 
 
 @media (max-width: 768px) {
