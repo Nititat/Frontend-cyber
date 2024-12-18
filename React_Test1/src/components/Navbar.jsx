@@ -14,10 +14,10 @@ function Navbar() {
 
       {/* Menu Section */}
       <div className="menu">
-        <Link to="/">Home</Link>
+        <Link to="/">MAP</Link>
         <Link to="/Analytic">Analytic</Link>
         <a href="https://ruk-com.cloud/" target="_blank" rel="noopener noreferrer">
-          Ruk-Com Site
+          Contact Ruk-Com
         </a>
       </div>
     </div>
