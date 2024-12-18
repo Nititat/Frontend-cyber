@@ -891,6 +891,77 @@ def get_mitre_techniques_today():
 
 
 
+@app.route("/api/top_rule_descriptions", methods=["GET"])
+def get_top_rule_descriptions():
+    try:
+       
+
+        # Elasticsearch Query
+        query = {
+            "aggs": {
+                "2": {
+                    "terms": {
+                        "field": "rule.description",
+                        "order": {
+                            "_count": "desc"
+                        },
+                        "size": 100  # ดึง 5 อันดับแรก
+                    }
+                }
+            },
+            "size": 0,
+            "stored_fields": ["*"],
+            "docvalue_fields": [
+                {"field": "timestamp", "format": "date_time"}
+            ],
+            "_source": {
+                "excludes": ["@timestamp"]
+            },
+            "query": {
+                "bool": {
+                    "filter": [
+                        {"match_all": {}},
+                        {
+                            "range": {
+                                "timestamp": {
+                                    "gte": "now/d",  # เริ่มต้นวันนี้
+                                    "lte": "now", 
+                                    "format": "strict_date_optional_time"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+
+        # ส่งคำขอไปยัง Elasticsearch
+        response = requests.post(
+            ES_URL,
+            auth=(ES_USERNAME, ES_PASSWORD),
+            headers={"Content-Type": "application/json"},
+            data=json.dumps(query),
+            verify=False  # ปิด SSL Verification หากจำเป็น
+        )
+
+        response.raise_for_status()
+
+        # แยกผลลัพธ์จาก Elasticsearch
+        data = response.json()
+        buckets = data.get("aggregations", {}).get("2", {}).get("buckets", [])
+
+        # จัดข้อมูลสำหรับการส่งกลับ
+        top_descriptions = [
+            {"rule_description": bucket["key"], "count": bucket["doc_count"]}
+            for bucket in buckets
+        ]
+
+        return jsonify(top_descriptions)
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error fetching top rule descriptions: {e}"}), 500
+
+
 
 
 if __name__ == "__main__":
