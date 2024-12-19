@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./css/Data_Attack.css";
+import "../css/Data_Attack.css"; // ปรับ path ตามตำแหน่งจริง
 import axios from "axios";
 import { setupDataAttackerAnimation } from "./JS/data_attackerFun";
 
