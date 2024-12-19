@@ -380,8 +380,8 @@ function Country_Attack() {
 
   const fetchCountries = async () => {
     try {
-      const API_IP = import.meta.env.VITE_API_IP || "127.0.0.1"; 
-      const API_PORT = import.meta.env.VITE_API_PORT || "5000"; 
+      const API_IP = import.meta.env.VITE_API_IP ; 
+      const API_PORT = import.meta.env.VITE_API_PORT ; 
       const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/today-attacks`;
 
       const response = await axios.get(API_ENDPOINT); 
