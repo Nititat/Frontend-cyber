@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../components/css/CountryAttack.css";
+import "/src/components/css/CountryAttack.css";
 import axios from "axios";
 
 // แมปชื่อประเทศกับรหัส ISO 2 ตัว

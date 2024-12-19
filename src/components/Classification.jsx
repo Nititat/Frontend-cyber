@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./css/Classification.css";
+import "/src/components/css/Classification.css";
 import axios from "axios"; // ใช้ Axios สำหรับการดึงข้อมูล
 import { setupClassificationAnimation } from "./JS/classification_Fun";
 
