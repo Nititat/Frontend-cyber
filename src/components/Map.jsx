@@ -126,20 +126,32 @@ const Map = () => {
 
     const fetchAttackData = async () => {
       try {
+        // ใช้ environment variables เพื่อสร้าง URL
+        const API_IP = import.meta.env.VITE_API_IP ;
+        const API_PORT = import.meta.env.VITE_API_PORT ;
+        const LATEST_ALERT_URL = `http://${API_IP}:${API_PORT}/api/latest_alert`;
+        const MITRE_ALERT_URL = `http://${API_IP}:${API_PORT}/api/mitre_alert`;
+    
+        console.log("Fetching data from:", LATEST_ALERT_URL, MITRE_ALERT_URL); // Debug URLs
+    
         const [latestResponse, mitreResponse] = await Promise.all([
-          fetch("http://localhost:5000/api/latest_alert"),
-          fetch("http://localhost:5000/api/mitre_alert"),
+          fetch(LATEST_ALERT_URL),
+          fetch(MITRE_ALERT_URL),
         ]);
-
+    
+        // ตรวจสอบสถานะการตอบกลับ
         if (!latestResponse.ok || !mitreResponse.ok) {
           throw new Error("Error fetching API data");
         }
-
+    
+        // แปลงข้อมูลจาก JSON
         const latestData = await latestResponse.json();
         const mitreData = await mitreResponse.json();
-
+    
+        // รวมข้อมูลจากทั้งสอง API
         const combinedData = [...latestData, ...mitreData];
-
+    
+        // กรองข้อมูลและปรับโครงสร้าง
         const filteredData = combinedData
           .map((item) => {
             const geoLocation = item._source.GeoLocation || {};
@@ -147,7 +159,7 @@ const Map = () => {
             const target = agentName.startsWith("sg")
               ? fixedPositions[1] // Singapore
               : fixedPositions[0]; // Default to Thailand
-
+    
             return {
               id: item._id,
               latitude: geoLocation.location?.lat,
@@ -158,12 +170,14 @@ const Map = () => {
             };
           })
           .filter((item) => item.latitude && item.longitude);
-
+    
+        // อัปเดต state
         setAttackData(filteredData);
       } catch (error) {
         console.error("Error fetching attack data:", error);
       }
     };
+    
 
     fetchAttackData();
 

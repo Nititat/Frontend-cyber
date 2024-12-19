@@ -10,7 +10,14 @@ function Classification() {
     const fetchMitreTechniques = async () => {
       try {
         console.log("Fetching MITRE techniques...");
-        const response = await axios.get("http://localhost:5000/api/today_mitre_techniques");
+        
+        const API_IP = import.meta.env.VITE_API_IP || "127.0.0.1";
+        const API_PORT = import.meta.env.VITE_API_PORT || "5000";
+        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/today_mitre_techniques`;
+
+        
+
+        const response = await axios.get(API_ENDPOINT);
 
         const mitreData = response.data;
         console.log("Fetched MITRE techniques:", mitreData);

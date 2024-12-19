@@ -52,21 +52,34 @@ function Data_Attack() {
   useEffect(() => {
     const fetchAttackers = async () => {
       try {
+        // ดึงค่าจาก environment variables
+        const API_IP = import.meta.env.VITE_API_IP ;
+        const API_PORT = import.meta.env.VITE_API_PORT ;
+  
+        // สร้าง Endpoint URLs
+        const LATEST_ALERT_URL = `http://${API_IP}:${API_PORT}/api/latest_alert`;
+        const MITRE_ALERT_URL = `http://${API_IP}:${API_PORT}/api/mitre_alert`;
+  
+        console.log("Fetching data from:", LATEST_ALERT_URL, MITRE_ALERT_URL);
+  
+        // เรียกใช้ API พร้อมกัน
         const [latestResponse, mitreResponse] = await Promise.all([
-          axios.get("http://localhost:5000/api/latest_alert"),
-          axios.get("http://localhost:5000/api/mitre_alert"),
+          axios.get(LATEST_ALERT_URL),
+          axios.get(MITRE_ALERT_URL),
         ]);
-
+  
+        // จัดการข้อมูลที่ได้รับ
         const latestData = latestResponse.data || [];
         const mitreData = mitreResponse.data || [];
-
+  
+        // อัปเดต attackers state
         setAttackers((prevAttackers) => {
           const updatedAttackers = [
             ...latestData,
             ...mitreData,
             ...prevAttackers,
           ];
-          return updatedAttackers.slice(0, 20);
+          return updatedAttackers.slice(0, 20); // จำกัดจำนวน attackers ที่ 20 รายการ
         });
       } catch (error) {
         console.error("Error fetching updated attackers data:", error);

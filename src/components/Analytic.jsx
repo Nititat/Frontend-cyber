@@ -130,7 +130,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEndpointData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/top-mitre-techniques"); // Replace with your API endpoint
+        const API_IP = import.meta.env.VITE_API_IP 
+        const API_PORT = import.meta.env.VITE_API_PORT 
+        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-mitre-techniques`;
+
+        
+
+        const response = await axios.get(API_ENDPOINT);
         const data = response.data;
   
         // Extract labels (techniques) and series data (counts)
@@ -165,9 +171,15 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchSeverityData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/top-agents"); // Replace with your actual API endpoint
+        const API_IP = import.meta.env.VITE_API_IP 
+        const API_PORT = import.meta.env.VITE_API_PORT 
+        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-agents`;
+
+        
+
+        const response = await axios.get(API_ENDPOINT);
         const data = response.data;
-  
+        
         // Assuming the API returns data in this format:
         // [
         //   { "agent_name": "vps.thaischool.in.th", "count": 8556671 },
@@ -209,9 +221,17 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMitreData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/top-countries"); // Replace with your API endpoint
+        
+        
+        const API_IP = import.meta.env.VITE_API_IP 
+        const API_PORT = import.meta.env.VITE_API_PORT 
+        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-countries`;
+
+        
+
+        const response = await axios.get(API_ENDPOINT);
         const data = response.data;
-  
+
         // Extract categories (countries) and series data (counts)
         const categories = data.map((item) => item.country); // Assuming API returns "country"
         const seriesData = data.map((item) => item.count); // Assuming API returns "count"
@@ -246,9 +266,15 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchIncidentData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/top-techniques"); // URL ของ API
+        
+        const API_IP = import.meta.env.VITE_API_IP 
+        const API_PORT = import.meta.env.VITE_API_PORT 
+        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-techniques`;
+
+      
+
+        const response = await axios.get(API_ENDPOINT);
         const data = response.data;
-  
         // แปลงข้อมูลจาก API ให้อยู่ในรูปแบบที่ ApexCharts รองรับ
         const chartData = data.map((item) => ({
           name: item.technique,
@@ -283,9 +309,15 @@ const Dashboard = () => {
   const fetchRealTimeData = async () => {
     try {
       // Fetch data from API
-      const response = await fetch("http://127.0.0.1:5000/api/peak-attack-periods");
-      const data = await response.json();
-  
+      
+      const API_IP = import.meta.env.VITE_API_IP 
+      const API_PORT = import.meta.env.VITE_API_PORT 
+      const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/peak-attack-periods`;
+
+      
+
+      const response = await axios.get(API_ENDPOINT);
+      const data = response.data;
       // Get current time in Thailand (GMT+7)
       const now = new Date(); // Current local time
       const thailandNow = new Date(now.getTime() + 7 * 60 * 60 * 1000); // Adjust to GMT+7
@@ -322,9 +354,16 @@ const Dashboard = () => {
   const fetchTopIncidents = async () => {
     try {
       // Fetch data from API
-      const response = await fetch("http://127.0.0.1:5000/api/vulnerabilities"); // Replace with your API URL
-      const data = await response.json();
-  
+      
+
+      const API_IP = import.meta.env.VITE_API_IP 
+      const API_PORT = import.meta.env.VITE_API_PORT 
+      const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/vulnerabilities`;
+
+      
+
+      const response = await axios.get(API_ENDPOINT);
+      const data = response.data;
       // Format the data to match the required structure
       const formattedData = data.map((item) => ({
         severity: item.severity,
