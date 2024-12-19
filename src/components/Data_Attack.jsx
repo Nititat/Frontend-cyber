@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Data_attack.css";
+import "./css/Data_attack.css";
 
 import axios from "axios";
 import { setupDataAttackerAnimation } from "./JS/data_attackerFun";
