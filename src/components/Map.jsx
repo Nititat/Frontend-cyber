@@ -180,57 +180,62 @@ const Map = () => {
           .geoNaturalEarth1()
           .scale(150)
           .translate([960 / 2, 500 / 2]);
-
+  
       const curvedLine = d3
           .line()
           .curve(d3.curveBasis)
           .x((d) => projection(d)[0])
           .y((d) => projection(d)[1]);
-
+  
+      // ปรับความเร็วตามจำนวนข้อมูล (ข้อมูลมาก -> ใช้เวลา animate น้อยลง)
+      const baseDuration = 1500; // ระยะเวลาเริ่มต้น
+      const speedFactor = Math.max(300, baseDuration / Math.log(data.length + 1)); // ลดความเร็วแบบลอการิทึม
+      const delayBetweenLines = speedFactor / 8; // หน่วงเวลาแอนิเมชันระหว่างเส้น
+  
+      console.log(`Adjusting animation speed: ${speedFactor} ms per line`);
+  
       // Group data by source and target coordinates
       const groupedAttacks = d3.group(data, d => `${d.longitude},${d.latitude}-${d.targetLongitude},${d.targetLatitude}`);
-
+  
       for (const [key, attacks] of groupedAttacks) {
           const { longitude, latitude, targetLatitude, targetLongitude } = attacks[0];
-
+  
           if (!longitude || !latitude) continue;
-
+  
           const source = [longitude, latitude];
           const target = [targetLongitude, targetLatitude];
           const midPoint = [
               (longitude + targetLongitude) / 2,
               (latitude + targetLatitude) / 2 + 23, // Adjust for "inverted" arc
           ];
-
+  
           for (let i = 0; i < attacks.length; i++) {
               const attack = attacks[i];
-              const attackColor = attackTypeColors[attack.type] || "#FFBA08";
-
+              const attackColor = attackTypeColors[attack.type] || "#B0C4DE";
+  
               const offset = i * 2; // Offset for duplicate lines
-
+  
               // Adjust midpoint to create separation for duplicate lines
               const adjustedMidPoint = [
                   midPoint[0],
                   midPoint[1] + offset,
               ];
-
+  
               // Add source radiating circle
-              svg
-                  .append("circle")
+              svg.append("circle")
                   .attr("cx", projection(source)[0])
                   .attr("cy", projection(source)[1])
                   .attr("r", 0)
                   .attr("fill", attackColor)
                   .attr("opacity", 0.7)
                   .transition()
-                  .duration(800)
+                  .duration(speedFactor / 2)
                   .attr("r", 10)
                   .attr("opacity", 0)
                   .remove();
-
+  
               // Draw the curved line
-              const path = svg
-                  .append("path")
+              svg.append("path")
                   .datum([source, adjustedMidPoint, target])
                   .attr("d", curvedLine)
                   .attr("fill", "none")
@@ -243,37 +248,38 @@ const Map = () => {
                       return this.getTotalLength();
                   })
                   .transition()
-                  .duration(1500)
+                  .duration(speedFactor)
                   .ease(d3.easeLinear)
                   .attr("stroke-dashoffset", 0)
                   .on("end", function () {
                       d3.select(this)
                           .transition()
-                          .duration(800)
-                          .attr("stroke-dashoffset", -this.getTotalLength()) // Remove the stroke gradually from the start
+                          .duration(speedFactor / 2)
+                          .attr("stroke-dashoffset", -this.getTotalLength())
                           .style("opacity", 0)
                           .remove();
                   });
-
+  
               // Add target radiating circle
-              svg
-                  .append("circle")
+              svg.append("circle")
                   .attr("cx", projection(target)[0])
                   .attr("cy", projection(target)[1])
                   .attr("r", 0)
                   .attr("fill", attackColor)
                   .attr("opacity", 0.7)
                   .transition()
-                  .duration(800)
+                  .duration(speedFactor / 2)
                   .attr("r", 10)
                   .attr("opacity", 0)
                   .remove();
-
+  
               // Add a delay between animations
-              await new Promise((resolve) => setTimeout(resolve, 200));
+              await new Promise((resolve) => setTimeout(resolve, delayBetweenLines));
           }
       }
   };
+  
+  
 
     // Draw the animations with inverted arcs
     drawInvertedCurvedLine(attackData);
