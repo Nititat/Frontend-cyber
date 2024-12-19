@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import topojsonData from "../assets/110m.json"; // Import TopoJSON
-import "/src/components/css/Map.css";
+import "./css/Map.css";
 
 const Map = () => {
   const mapRef = useRef();

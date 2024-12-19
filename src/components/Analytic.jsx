@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
-import "/src/components/css/analytic.css";
+import "../components/css/analytic.css";
 import axios from "axios";
 
 const Dashboard = () => {
