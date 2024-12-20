@@ -13,7 +13,7 @@ function Classification() {
         
         const API_IP = import.meta.env.VITE_API_IP ;
         const API_PORT = import.meta.env.VITE_API_PORT;
-        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/today_mitre_techniques`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/today_mitre_techniques`;
 
         
 

@@ -57,8 +57,8 @@ function Data_Attack() {
         const API_PORT = import.meta.env.VITE_API_PORT ;
   
         // สร้าง Endpoint URLs
-        const LATEST_ALERT_URL = `http://${API_IP}:${API_PORT}/api/latest_alert`;
-        const MITRE_ALERT_URL = `http://${API_IP}:${API_PORT}/api/mitre_alert`;
+        const LATEST_ALERT_URL = `https://${API_IP}:${API_PORT}/api/latest_alert`;
+        const MITRE_ALERT_URL = `https://${API_IP}:${API_PORT}/api/mitre_alert`;
   
         console.log("Fetching data from:", LATEST_ALERT_URL, MITRE_ALERT_URL);
   

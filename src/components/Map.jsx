@@ -129,8 +129,8 @@ const Map = () => {
         // ใช้ environment variables เพื่อสร้าง URL
         const API_IP = import.meta.env.VITE_API_IP ;
         const API_PORT = import.meta.env.VITE_API_PORT ;
-        const LATEST_ALERT_URL = `http://${API_IP}:${API_PORT}/api/latest_alert`;
-        const MITRE_ALERT_URL = `http://${API_IP}:${API_PORT}/api/mitre_alert`;
+        const LATEST_ALERT_URL = `https://${API_IP}:${API_PORT}/api/latest_alert`;
+        const MITRE_ALERT_URL = `https://${API_IP}:${API_PORT}/api/mitre_alert`;
     
         console.log("Fetching data from:", LATEST_ALERT_URL, MITRE_ALERT_URL); // Debug URLs
     

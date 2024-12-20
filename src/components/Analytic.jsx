@@ -132,7 +132,7 @@ const Dashboard = () => {
       try {
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-mitre-techniques`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-mitre-techniques`;
 
         
 
@@ -173,7 +173,7 @@ const Dashboard = () => {
       try {
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-agents`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-agents`;
 
         
 
@@ -225,7 +225,7 @@ const Dashboard = () => {
         
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-countries`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-countries`;
 
         
 
@@ -269,7 +269,7 @@ const Dashboard = () => {
         
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/top-techniques`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-techniques`;
 
       
 
@@ -312,7 +312,7 @@ const Dashboard = () => {
       
       const API_IP = import.meta.env.VITE_API_IP 
       const API_PORT = import.meta.env.VITE_API_PORT 
-      const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/peak-attack-periods`;
+      const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/peak-attack-periods`;
 
       
 
@@ -358,7 +358,7 @@ const Dashboard = () => {
 
       const API_IP = import.meta.env.VITE_API_IP 
       const API_PORT = import.meta.env.VITE_API_PORT 
-      const API_ENDPOINT = `http://${API_IP}:${API_PORT}/api/vulnerabilities`;
+      const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/vulnerabilities`;
 
       
 
