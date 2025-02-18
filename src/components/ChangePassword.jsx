@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "/css/ChangePassword.css";
+import "../css/changePassword.css";
 
 function ChangePassword() {
   
