@@ -11,6 +11,7 @@ svg {
   svg path {
     transition: fill 0.3s ease, stroke 0.3s ease; /* เพิ่ม effect */
     
+    
   }
   
   /* เปลี่ยนสีเมื่อ hover */
@@ -64,7 +65,7 @@ svg {
     }
   
     svg path {
-      stroke-width: 0.8; /* เพิ่มความหนาของเส้นขอบเล็กน้อย */
+      stroke-width: 1; /* เพิ่มความหนาของเส้นขอบเล็กน้อย */
     }
   }
   
@@ -74,9 +75,7 @@ svg {
       padding-bottom: 60%; /* ใช้อัตราส่วนปกติ */
     }
   
-    svg path {
-      stroke-width: 1; /* ขนาดเส้นขอบมาตรฐาน */
-    }
+    
   }
   
   /* สำหรับหน้าจอขนาดใหญ่มาก */
@@ -89,22 +88,8 @@ svg {
   }
   
  /* Style for Text on the Map */
-svg text {
-  fill: #FFFFFF; /* สีขาว */
-  font-family: "Montserrat", Arial, sans-serif; /* ฟอนต์ที่ดูทันสมัย */
-  font-weight: bold; /* ทำให้ข้อความหนาขึ้น */
-  text-shadow: 1px 1px 2px rgb(0, 0, 0); /* เงาเพื่อให้อ่านง่าย */
-  pointer-events: none; /* ป้องกันการกดหรือคลิกข้อความ */
-}
 
-/* เพิ่มระยะห่างระหว่างข้อความและตำแหน่ง */
-svg text.thailand {
-  transform: translate(5px, -5px);
-   /* ขยับตำแหน่งข้อความ */
-}
+ 
 
-svg text.singapore {
-  transform: translate(5px, 5px); /* ขยับตำแหน่งข้อความ */
-}
-
+ 
 

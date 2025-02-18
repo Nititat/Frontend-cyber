@@ -1,86 +1,71 @@
 .container-item {
   display: flex;
   flex-direction: column;
-  max-height: 250px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Narrow scrollbar for Firefox */
-  scrollbar-color: #d6e8eb #2a2a2a; /* Scrollbar color */
-  background-color: rgba(12, 50, 68, 0.562);/* Dark background */
-  border: 1px solid #333; /* Subtle border */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
-  font-family: 'Poppins', sans-serif;
+  max-height: 250px; /* กำหนดความสูงสูงสุด */
+  overflow-y: auto; /* เปิดเลื่อนแนวตั้ง */
+  scrollbar-width: thin;
+  scrollbar-color: #7AC984 #D4ECDC;
+  background-color: #ffffff; /* พื้นหลังเขียวโปร่ง */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+  font-family: 'Roboto', sans-serif; /* ฟอนต์ */
+  
 }
 
-.container-item::-webkit-scrollbar {
-  width: 8px; /* Scrollbar width */
-}
 
-.container-item::-webkit-scrollbar-thumb {
-  background-color: #00bcd4; /* Scrollbar color */
-  border-radius: 5px; /* Round scrollbar edges */
-}
-
-.container-item::-webkit-scrollbar-track {
-  background-color: #2a2a2a; /* Scrollbar track color */
-}
 
 .container-item p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #ffffff; /* White text */
-  font-size: 14px; /* Font size */
-  padding: 10px; /* Padding for text */
-  border-bottom: 1px solid #333; /* Divider between items */
+  color: #000000; /* ข้อความสีขาว */
+  font-size: 12px; /* ขนาดข้อความ */
+  padding: 10px; /* ระยะห่าง */
+  /* border-bottom: 1px solid #2a2a2a;  */
+  transition: background-color 0.3s ease, color 0.3s ease; /* เพิ่มเอฟเฟกต์ */
 }
 
 .container-item p:last-child {
-  border-bottom: none; /* Remove border for last item */
+  border-bottom: none; /* ลบเส้นคั่นสำหรับรายการสุดท้าย */
 }
 
 .container-item p:nth-child(even) {
-  background-color: rgba(11, 20, 20, 0.425); /* Alternate row background */
+  background-color: #f7f7f7; /* สีสำหรับแถวคู่ */
 }
 
 .container-item p:hover {
-  background-color: rgba(0, 188, 212, 0.2); /* Highlight on hover */
-  color: #00bcd4; /* Text color on hover */
-  cursor: pointer; /* Pointer cursor */
+  background-color: #e0e0e0;
+   /* พื้นหลังเมื่อ hover */
+  color: #000000; /* เปลี่ยนสีข้อความ */
+  cursor: pointer; /* เปลี่ยนเป็น pointer */
 }
 
 .Classification {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Add space between text and arrow */
-  font-size: 14px;
+  justify-content: space-between;
+  font-size: 12px;
   font-weight: bold;
-  font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
-  color: #ffffff;
-  background-color: rgba(0, 128, 128, 0.3); /* Darker background for classification */
-  padding: 10px 15px; /* Add padding for a balanced look */
-   /* Border around classification */
-  border-radius: 5px; /* Slight758694ly rounded corners */
+  color: #000000; /* ข้อความสีขาว */
+  background: rgba(41, 167, 51, 0.7);
+  padding: 10px 15px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  */
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.3s ease; /* เพิ่มความลื่น */
 }
 
 .Classification:hover {
-  color: #00bcd4;
-  background: rgba(0, 188, 212, 0.1);/* Lighter background on hover */
+  background: linear-gradient(45deg, #22aa2e, #96dd4e); /* เปลี่ยน gradient เมื่อ hover */
+  color: #101010; /* ข้อความสีดำ */
 }
 
 .Classification::after {
-  content: '▼'; /* Add dropdown arrow */
+  content: '▼'; /* เพิ่มลูกศร */
   font-size: 12px;
-  color: #ffffff;
-  margin-left: 10px; /* Add spacing between text and arrow */
-  transition: transform 0.3s ease; /* Smooth transition for rotation */
-}
-
-.Classification:hover::after {
-  color: #00bcd4; /* Change arrow color on hover */
+  color: #ffffff; /* สีลูกศร */
+  margin-left: 10px; /* ระยะห่าง */
+  transition: transform 0.3s ease; /* เพิ่มการหมุน */
 }
 
 .container-item-header {
@@ -88,60 +73,62 @@
   font-weight: bold;
   color: #ffffff;
   padding: 10px 15px;
-  background-color: #101010;
-  border-bottom: 1px solid #333;
-  border-radius: 5px 5px 0 0; /* Round the top corners */
+  background-color: #101010; /* พื้นหลังหัวข้อ */
+  border-bottom: 2px solid #6bff82; /* เส้นคั่นสีเขียว */
+  border-radius: 10px 10px 0 0; /* มุมโค้งบน */
   text-transform: uppercase;
 }
 
+.container-item-header:hover {
+  background-color: #6bff82; /* สีเขียวเมื่อ hover */
+  color: #101010; /* ข้อความสีดำ */
+}
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .container-item {
-    max-height: 200px; /* Reduce max height on tablets */
+    max-height: 200px;
   }
 
   .container-item p {
-    flex-direction: column; /* Stack text vertically */
-    font-size: 12px; /* Reduce font size */
-    padding: 8px; /* Adjust padding */
+    flex-direction: column;
+    font-size: 12px;
+    padding: 8px;
   }
 
   .Classification {
-    font-size: 12px; /* Reduce font size for classification */
-    padding: 8px; /* Adjust padding */
+    font-size: 12px;
+    padding: 8px;
   }
 
   .container-item-header {
-    font-size: 14px; /* Reduce header size */
-    padding: 8px 10px; /* Adjust padding */
+    font-size: 14px;
+    padding: 8px 10px;
   }
 }
 
 @media (max-width: 480px) {
   .container-item {
-    max-height: unset; /* Remove height restriction for small screens */
-    box-shadow: none; /* Remove shadow for minimal look */
+    max-height: unset;
+    box-shadow: none;
   }
 
   .container-item p {
-    font-size: 11px; /* Smaller font size */
-    padding: 6px; /* Reduce padding further */
+    font-size: 11px;
+    padding: 6px;
   }
 
   .Classification {
-    font-size: 11px; /* Adjust classification font size */
-    padding: 6px; /* Adjust padding */
+    font-size: 11px;
+    padding: 6px;
   }
 
   .container-item-header {
-    font-size: 12px; /* Smaller font for header */
-    padding: 6px 8px; /* Adjust padding */
+    font-size: 12px;
+    padding: 6px 8px;
   }
 
   .container-item::-webkit-scrollbar {
-    width: 5px; /* Narrow scrollbar for smaller screens */
+    width: 5px;
   }
 }
-
-

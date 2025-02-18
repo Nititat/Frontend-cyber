@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../components/css/CountryAttack.css";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"; // ใช้ axiosInstance แทน axios
 
 // แมปชื่อประเทศกับรหัส ISO 2 ตัว
 const countryToISO = {
@@ -377,24 +377,20 @@ const countryToISO = {
 
 function Country_Attack() {
   const [countries, setCountries] = useState([]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const fetchCountries = async () => {
     try {
-      const API_IP = import.meta.env.VITE_API_IP ; 
-      const API_PORT = import.meta.env.VITE_API_PORT ; 
+      const API_IP = import.meta.env.VITE_API_IP; 
+      const API_PORT = import.meta.env.VITE_API_PORT; 
       const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/today-attacks`;
 
-      const response = await axios.get(API_ENDPOINT); 
+      const response = await axiosInstance.get(API_ENDPOINT); 
       const data = response.data;
 
-      console.log("Fetched data:", data); 
-
-
       const formattedCountries = data.map((item) => {
-        // แปลงชื่อประเทศเป็นรหัส ISO
         const countryCode = countryToISO[item.country] || item.country.slice(0, 2).toLowerCase();
         const flagPath = `/png100px/${countryCode}.png`;
-
 
         return {
           name: item.country,
@@ -415,31 +411,59 @@ function Country_Attack() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const handleClose = () => {
+    setIsCollapsed(true);
+  };
+
+  const handleOpen = () => {
+    setIsCollapsed(false);
+  };
+
   return (
-    <div className="flag-grid-container">
-      <p className="dropdown-title">TOP TARGETED COUNTRIES</p>
-      <div className="flag-grid">
-        {countries.length > 0 ? (
-          countries.map((country, index) => (
-            <div key={index} className="flag-item">
-              <img
-                src={country.flag}
-                alt={`${country.name} Flag`}
-                className="flag-img"
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/50"; // แสดง placeholder ถ้าไม่มีธง
-                }}
-              />
-              <p className="flag-count">
-                {country.count.toLocaleString()} Attacks
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="loading-text">Loading data...</p>
-        )}
-      </div>
-    </div>
+    <>
+      {isCollapsed ? (
+        <button className="reopen-icon" onClick={handleOpen}>
+          <img src="/public/new-window-removebg-preview.png" alt="Reopen" />
+        </button>
+      ) : (
+        <div className="popup-container">
+          <div className="popup-header">
+            <h2 className="popup-title">TOP TARGETED COUNTRIES</h2>
+            <button className="close-button" onClick={handleClose}>
+              &times;
+            </button>
+          </div>
+          <p className="popup-subtitle">
+            Highest rate of attacks per organization in the last day.
+          </p>
+          <div className="popup-content">
+            {countries.length > 0 ? (
+              countries.map((country, index) => (
+                <div key={index} className="popup-item">
+                  <img
+                    src={country.flag}
+                    alt={`${country.name} Flag`}
+                    className="popup-item-image"
+                    onError={(e) => {
+                      e.target.src = "https://via.placeholder.com/50";
+                    }}
+                  />
+                  <div className="popup-item-info">
+                    <p className="popup-item-name">{country.name}</p>
+                    <p className="popup-item-details">
+                      {country.count.toLocaleString()} Attacks
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="loading-text">Loading data...</p>
+            )}
+          </div>
+          
+        </div>
+      )}
+    </>
   );
 }
 

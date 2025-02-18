@@ -1,46 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./css/Data_attack.css";
-
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"; // ใช้ axiosInstance แทน axios
 import { setupDataAttackerAnimation } from "./JS/data_attackerFun";
 
-const attackTypeColors = {
-  "Web server 400 error code.": "#FF5733", // Orange Red
-  "CMS (WordPress or Joomla) login attempt.": "#33FF57", // Bright Green
-  "Botnet Activity Detected and Blocked": "#3357FF", // Bright Blue
-  "High amount of POST requests in a small period of time (likely bot).": "#FF33A8", // Pink
-  "Multiple web server 400 error codes from same source ip.": "#A833FF", // Purple
-  "WAF Alert: Request Blocked.": "#33FFF3", // Cyan
-  "pure-ftpd: Multiple connection attempts from same source.": "#FFC300", // Yellow Gold
-  "pure-ftpd: FTP Authentication success.": "#C70039", // Crimson Red
-  "Query cache denied (probably config error).": "#900C3F", // Dark Red
-  "Simple shell.php command execution.": "#581845", // Dark Purple
-  "SQL injection attempt.": "#DAF7A6", // Light Green
-  "Vulnerability Scanning": "#FF7F50", // Coral
-  "Password Guessing": "#87CEEB", // Sky Blue
-  "Stored Data Manipulation": "#6495ED", // Cornflower Blue
-  "Exploit Public-Facing Application": "#FFD700", // Bright Gold
-  "Process Injection": "#FF4500", // Orange Red
-  "Data Destruction": "#2E8B57", // Sea Green
-  "File Deletion": "#20B2AA", // Light Sea Green
-  "Valid Accounts": "#7B68EE", // Medium Slate Blue
-  "SSH": "#6A5ACD", // Slate Blue
-  "File and Directory Discovery": "#00CED1", // Dark Turquoise
-  "Brute Force": "#FF6347", // Tomato
-  "Endpoint Denial of Service": "#4682B4", // Steel Blue
-  "Network Denial of Service": "#32CD32", // Lime Green
-  "JavaScript": "#BA55D3", // Medium Orchid
-  "Sudo and Sudo Caching": "#F08080", // Light Coral
-  "Remote Services": "#48D1CC", // Medium Turquoise
-  "Exploitation for Privilege Escalation": "#FF1493", // Deep Pink
-  "Exploitation of Remote Services": "#00FF7F", // Spring Green
-  "Exploitation for Client Execution": "#8B0000", // Dark Red
-  "Web Shell": "#CD853F", // Peru
-  Unknown: "#B0C4DE", // Light Steel Blue
-};
+const API_IP = import.meta.env.VITE_API_IP;
+const API_PORT = import.meta.env.VITE_API_PORT;
+const ATTACK_COLOR_URL = `https://${API_IP}:${API_PORT}/api/attack_colors`;
 
 function Data_Attack() {
   const [attackers, setAttackers] = useState([]);
+  const [attackTypeColors, setAttackTypeColors] = useState({});
 
   const addHours = (timestamp, hours) => {
     if (!timestamp) return "N/A";
@@ -49,38 +18,48 @@ function Data_Attack() {
     return date.toISOString().replace("T", " ").replace("Z", "");
   };
 
+  const getAttackColorFromDB = async (attackType) => {
+    try {
+      const response = await axiosInstance.get(`${ATTACK_COLOR_URL}/${encodeURIComponent(attackType)}`);
+      return response.data.color;
+    } catch (error) {
+      console.error("Error fetching attack color:", error);
+      return "#81BFDA"; // สีสำรองกรณี API ใช้งานไม่ได้
+    }
+  };
+
   useEffect(() => {
     const fetchAttackers = async () => {
       try {
-        // ดึงค่าจาก environment variables
-        const API_IP = import.meta.env.VITE_API_IP ;
-        const API_PORT = import.meta.env.VITE_API_PORT ;
-  
-        // สร้าง Endpoint URLs
         const LATEST_ALERT_URL = `https://${API_IP}:${API_PORT}/api/latest_alert`;
         const MITRE_ALERT_URL = `https://${API_IP}:${API_PORT}/api/mitre_alert`;
-  
+
         console.log("Fetching data from:", LATEST_ALERT_URL, MITRE_ALERT_URL);
-  
-        // เรียกใช้ API พร้อมกัน
+
         const [latestResponse, mitreResponse] = await Promise.all([
-          axios.get(LATEST_ALERT_URL),
-          axios.get(MITRE_ALERT_URL),
+          axiosInstance.get(LATEST_ALERT_URL),
+          axiosInstance.get(MITRE_ALERT_URL),
         ]);
-  
-        // จัดการข้อมูลที่ได้รับ
+
         const latestData = latestResponse.data || [];
         const mitreData = mitreResponse.data || [];
-  
-        // อัปเดต attackers state
-        setAttackers((prevAttackers) => {
-          const updatedAttackers = [
-            ...latestData,
-            ...mitreData,
-            ...prevAttackers,
-          ];
-          return updatedAttackers.slice(0, 20); // จำกัดจำนวน attackers ที่ 20 รายการ
+
+        const newAttackers = [...latestData, ...mitreData];
+
+        // ดึงสีของประเภทการโจมตีจากฐานข้อมูล
+        const uniqueAttackTypes = [...new Set(newAttackers.map(a => a._source?.rule?.description || "Unknown"))];
+
+        uniqueAttackTypes.forEach(async (attackType) => {
+          if (!attackTypeColors[attackType]) {
+            const color = await getAttackColorFromDB(attackType);
+            setAttackTypeColors((prevColors) => ({
+              ...prevColors,
+              [attackType]: color,
+            }));
+          }
         });
+
+        setAttackers((prevAttackers) => [...newAttackers, ...prevAttackers].slice(0, 20));
       } catch (error) {
         console.error("Error fetching updated attackers data:", error);
       }
@@ -89,7 +68,7 @@ function Data_Attack() {
     fetchAttackers();
     const intervalId = setInterval(fetchAttackers, 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [attackTypeColors]);
 
   useEffect(() => {
     setupDataAttackerAnimation();
@@ -115,6 +94,7 @@ function Data_Attack() {
               const agent = source.agent || {};
               const agentIP = source.data || {};
               const rule = source.rule || {};
+              const attackColor = attackTypeColors[rule.description] || "#81BFDA";
 
               return (
                 <div key={index} className="row">
@@ -123,10 +103,7 @@ function Data_Attack() {
                   </div>
                   <div
                     className="fa description"
-                    style={{
-                      color: attackTypeColors[rule.description] || "#B0C4DE",
-                      fontWeight: "bold",
-                    }}
+                    style={{ color: attackColor, fontWeight: "bold" }}
                   >
                     {rule.description || "N/A"}
                   </div>

@@ -1,148 +1,134 @@
 .tableContainer {
-  max-height: 250px; /* Adjust the height as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Adjust scrollbar size */
-  scrollbar-color: #d6e8eb #2a2a2a;/* Set scrollbar colors */
-  width: 100%; /* Adjust width for better fit */
-  margin:auto; /* Center the table container */
-  background-color: rgba(11, 20, 20, 0.8); /* Darker background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-   /* Subtle shadow */
+  max-height: 250px; /* กำหนดความสูงของตาราง */
+  overflow-y: auto; /* เปิดใช้งานการเลื่อนแนวตั้ง */
+  scrollbar-width: thin;
+  scrollbar-color: #7AC984 #D4ECDC;
+  width: 100%;
+  margin: auto; /* จัดให้อยู่กึ่งกลาง */
+  background-color: #ffffff; /* พื้นหลังสีเขียวใส */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+  font-family: 'Roboto', sans-serif;
 }
 
 .table {
   display: flex;
-  flex-direction: column; /* Stack rows vertically */
+  flex-direction: column;
 }
 
 .header {
   display: flex;
-  flex-direction: row; /* Horizontal alignment */
-  background-color: #01082D; /* Dark header background */
-  color: white; /* White text for header */
+  flex-direction: row;
+  background-color: #f7f7f7; /* พื้นหลังหัวตารางสีเข้ม */
+  color: #000000;
   font-weight: bold;
-  position: sticky; /* Stick header to top */
+  font-family: 'Roboto', sans-serif; /* ฟอนต์ */
+  position: sticky;
   top: 0;
-  z-index: 1; /* Keep above other content */
-  border-radius: 8px 8px 0 0; /* Round the top corners */
+  z-index: 1;
+  
 }
 
 .header > div {
-  flex: 1; /* Equal column width */
-  padding: 12px; /* Add spacing */
-  text-align: center; /* Center text */
-  font-size: 14px; /* Adjust font size */
-  text-transform: uppercase; /* Capitalize text */
-  border-right: 1px solid #333; /* Add subtle column separators */
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  /* border-right: 1px solid #333; */
 }
 
 .header > div:last-child {
-  border-right: none; /* Remove separator from last column */
+  border-right: none;
 }
 
 .data {
   display: flex;
-  flex-direction: column; /* Stack rows */
+  flex-direction: column;
 }
 
 .row {
   display: flex;
-  flex-direction: row; /* Align cells horizontally */
-  background-color: rgba(12, 50, 68, 0.562); /* Dark teal for rows */
-  border-bottom: 1px solid #333; /* Row separators */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  flex-direction: row;
+  background-color: rgb(255, 255, 255); 
+  /* border-bottom: 1px solid #333; */
+  transition: background-color 0.3s ease;
 }
 
 .row:nth-child(even) {
-  background-color: rgba(0, 128, 128, 0.3); /* Slightly different for even rows */
+  background-color: #f7f7f7; /* สีสำหรับแถวคู่ */
 }
 
 .row:hover {
-  background-color: rgba(0, 188, 212, 0.2); /* Highlight row on hover */
+  background-color: #e0e0e0;
+  /* สีเมื่อ hover */
 }
 
 .row > div {
-  flex: 1; /* Equal width for cells */
-  padding: 10px; /* Add spacing */
-  text-align: center; /* Center align text */
-  color: #e0e0e0; /* Light text color */
-  font-size: 13px; /* Adjust font size */
-  word-wrap: break-word; /* Handle long text */
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  color: #000000; /* ข้อความสีขาว */
+  font-size: 12px;
+  word-wrap: break-word;
+  
 }
 
-.row > div:first-child {
-  font-weight: bold; /* Highlight first column */
-}
+
 
 .DataAttacker_log {
   display: flex;
-  align-items: center; /* Center vertically */
-  justify-content: space-between; /* Add space between text and dropdown icon */
-  font-size: 14px; /* Adjust font size for better visibility */
-  font-weight: bold; /* Make text bold */
-  text-transform: uppercase; /* Capitalize all letters */
-  color: #ffffff; /* White text color */
-  background-color: rgba(0, 128, 128, 0.3); /* Dark background */
-  padding: 10px 10px; /* Add padding for a balanced look */
-  /* Add a subtle border */
-  border-radius: 5px; /* Slightly rounded corners */
-  font-family: 'Roboto', sans-serif; /* Use a modern font */
-  cursor: pointer; /* Change cursor to pointer */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-   /* Add shadow for depth */
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #000000;
+  background: rgba(41, 167, 51, 0.7); /* พื้นหลังปุ่มสีเขียว */
+  padding: 10px 15px;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+  transition: all 0.3s ease; /* เพิ่มความลื่น */
 }
 
 .DataAttacker_log:hover {
-  color: #00bcd4;
-  background: rgba(0, 188, 212, 0.1);
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  background: linear-gradient(45deg, #22aa2e, #96dd4e); /* สีเขียวจางเมื่อ hover */
+  color: #0b1f37; /* ข้อความสีเข้ม */
+  transition: all 0.3s ease;
 }
 
-/* Dropdown indicator (arrow) styling */
 .DataAttacker_log::after {
-  content: '▼'; /* Add a dropdown arrow */
-  font-size: 12px; /* Smaller size for the arrow */
-  color: #ffffff; /* White arrow */
-  margin-left: 10px; /* Add space between text and arrow */
-  transition: transform 0.3s ease; /* Smooth transition for rotation */
+  content: '▼';
+  font-size: 12px;
+  color: #ffffff;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
 }
-
-
-
 
 @media (max-width: 768px) {
   .header, .row {
-    flex-direction: column; /* Stack columns vertically */
+    flex-direction: column;
   }
 
   .header > div, .row > div {
     padding: 8px;
-    text-align: left; /* Align text to left */
-    font-size: 12px; /* Reduce font size */
-  }
-
-  .header > div {
-    background-color: #01082D;
-    color: white;
-    border-right: none;
-    border-bottom: 1px solid #333;
+    text-align: left;
+    font-size: 12px;
   }
 
   .tableContainer {
-    max-height: unset; /* Remove height restriction */
+    max-height: unset;
   }
 }
 
 @media (max-width: 480px) {
   .header > div, .row > div {
-    font-size: 10px; /* Further reduce font size */
-    padding: 5px; /* Adjust padding for smaller screens */
+    font-size: 10px;
+    padding: 5px;
   }
 
   .DataAttacker_log {
-    font-size: 12px; /* Smaller font for log */
-    padding: 8px; /* Reduce padding */
+    font-size: 12px;
+    padding: 8px;
   }
 }
-

@@ -1,0 +1,156 @@
+
+  /* Center container for login box */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:  90vh;
+    background-image: url('C:\Users\sooke\Desktop\frontend\public\bg_banner.png'); /* ใส่รูปภาพพื้นหลัง */
+    background-size: cover; /* ปรับขนาดให้ครอบคลุมพื้นที่ */
+    background-position: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
+    background-repeat: no-repeat; /* ไม่ให้ทำซ้ำ */
+    background-color: white;
+  }
+  
+  /* Styling for the login box */
+  .login-box {
+    background-color: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.15); /* เงาแบบซ้อน */    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    height: 450px;
+  }
+  
+  /* Title styling */
+  .login-box h2 {
+    font-size: 24px;
+    text-align: left;
+    /* margin-bottom: 20px; */
+    color: #333;
+  }
+
+  .login-box h4 {
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 40px;
+    color: #333;
+    font-weight: 300;
+  }
+  
+  /* Styling for error message */
+  .login-error {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  
+  /* Input field styling */
+  .login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Styling for the login button */
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .login-button:hover {
+    background-color: #45a049;
+  }
+  
+ h1 {
+  font-size: 14px;
+  text-align: left;
+  margin-bottom: 10px;
+  color: #333;
+ }
+
+ .line-with-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #7a7a7a; /* สีของข้อความ */
+  font-size: 13px; /* ขนาดของข้อความ */
+  margin-top: 10px; /* ระยะห่างด้านบนของข้อความ */
+}
+
+.line-with-text::before,
+.line-with-text::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ccc; /* สีและความหนาของเส้น */
+  margin: 0 10px; /* ระยะห่างระหว่างเส้นกับข้อความ */
+}
+
+
+
+.google-login h3 {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #7a7a7a; /* สีของข้อความ */
+  font-size: 13px; /* ขนาดของข้อความ */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.google-login h3::before,
+.google-login h3::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ccc; /* สีและความหนาของเส้น */
+  margin: 0 10px; /* ระยะห่างระหว่างเส้นกับข้อความ */
+}
+
+.google-login button {
+  
+  width: 100%;
+  padding: 10px;
+}
+
+
+.qr-code-container {
+  text-align: center;
+  margin-top: -20px;
+  
+}
+
+.qr-code-container img {
+  max-width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.login-error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.two-factor-auth h1{
+  margin-bottom: 20px;
+}
+
+.two-factor-auth h2{
+  margin-bottom: 80px;
+}
+

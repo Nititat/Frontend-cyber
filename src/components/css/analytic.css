@@ -1,11 +1,11 @@
 body {
-  background: #1B213B;
-  color: #fff;
-  font-family: "Montserrat", Arial, sans-serif;
+  background: linear-gradient(to bottom, #f1faf2, #ffffff);
+  color: #000000;
+  font-family: 'Roboto', sans-serif; /* ฟอนต์ */
   margin: 0;
   padding: 0;
-  height: 100vh;
-  
+  height: auto;
+  background-repeat: no-repeat;
 
 }
 
@@ -18,7 +18,8 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
   margin-top: 20px;
-  background-color: #1B213B;
+  background: linear-gradient(to bottom, #f1faf2, #ffffff);
+
 }
 
 /* หน้าจอเล็กกว่า 768px (Tablet/มือถือ) */
@@ -50,7 +51,7 @@ body {
 
 
 .p-3 {
-  background: #262D47;
+  background: #ffffff;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -62,7 +63,7 @@ body {
 }
 
 h6 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
   margin-bottom: 15px;
 }
@@ -77,19 +78,19 @@ h6 {
   padding: 15px;
   text-align: left;
   width: 300vh;
-  border: 1px solid #40475D;
+  border: 1px solid #e8eaf1;
 }
 
 .table th {
-  background: #30354E;
+  background: #34ce74;
 }
 
 .table tr:nth-child(even) {
-  background: #30354E;
+  background: #ffffff;
 }
 
 .table tr:nth-child(odd) {
-  background: #262D47;
+  background: #ffffff;
 }
 
 .chart-container {
@@ -123,8 +124,8 @@ h6 {
 
 /* Menu Items */
 .apexcharts-menu-item {
-  background: #262D47; /* Slightly lighter background for items */
-  color: #ffffff; /* White text for visibility */
+  background: #fdfdfd; /* Slightly lighter background for items */
+  color: #000000; /* White text for visibility */
   font-size: 13px; /* Consistent font size */
   font-family: "Montserrat", Arial, sans-serif; /* Matching font */
   padding: 10px 15px; /* Padding for better clickability */
@@ -135,7 +136,7 @@ h6 {
 
 /* Hover Effect */
 .apexcharts-menu-item:hover {
-  background: #9b59b6; /* Highlight color on hover */
+  background: #000000; /* Highlight color on hover */
   color: #ffffff; /* Ensure text remains visible */
   cursor: pointer; /* Pointer cursor for interactivity */
 }
@@ -148,7 +149,7 @@ h6 {
 }
 /* Legend Text */
 .apexcharts-legend-text {
-  color: #ffffff !important; /* White text for better visibility on dark backgrounds */
+  color: #000000 !important; /* White text for better visibility on dark backgrounds */
   font-size: 13px; /* Adjust font size for readability */
   font-family: "Montserrat", Arial, sans-serif; /* Matching font for consistency */
   font-weight: 500; /* Slightly bold for better emphasis */
@@ -157,7 +158,7 @@ h6 {
 
 /* Hover Effect on Legend Text */
 .apexcharts-legend-text:hover {
-  color: #9b59b6 !important; /* Highlight color on hover */
+  color: #59b669 !important; /* Highlight color on hover */
   cursor: pointer; /* Pointer cursor to indicate interactivity */
 }
 /* Tooltip Background */
@@ -170,7 +171,7 @@ h6 {
 
 /* Tooltip Text */
 .apexcharts-tooltip-title {
-  color: #9b59b6 !important; /* Highlighted title color */
+  color: #000000 !important; /* Highlighted title color */
   font-weight: bold !important; /* Bold for emphasis */
 }
 
@@ -204,4 +205,63 @@ h6 {
 .severity-label.critical {
   background-color: #e74c3c; /* Blue for Low */
 }
+
+
+/* ปรับสีข้อความแกน Y */
+.apexcharts-yaxis text {
+  fill: #000 !important; /* เปลี่ยนสีข้อความในแกน Y เป็นสีดำ */
+  font-size: 12px !important; /* ปรับขนาดข้อความ */
+  font-weight: normal !important; /* ตัวอักษรแบบปกติ */
+  font-family: "Montserrat", Arial, sans-serif;
+  
+}
+
+/* ปรับสีข้อความแกน X */
+.apexcharts-xaxis text {
+  fill: #000 !important; /* เปลี่ยนสีข้อความในแกน X เป็นสีดำ */
+  font-size: 12px !important; /* ปรับขนาดข้อความ */
+  font-weight: normal !important; /* ตัวอักษรแบบปกติ */
+  font-family: "Montserrat", Arial, sans-serif;
+  
+}
+/* ลบเงาในกราฟ */
+.apexcharts-bar-series .apexcharts-bar-area {
+  box-shadow: none !important; /* ลบเงาที่ปรากฏ */
+}
+
+/* ลบเงาในตัวเลขหรือข้อความ */
+.apexcharts-text,
+.apexcharts-data-label {
+  text-shadow: none !important; /* ลบเงาจากตัวอักษร */
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chart-header h6 {
+  margin: 0;
+}
+
+.chart-header select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #e8eaf1;
+  background: #ffffff;
+  color: #000000;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+
+
+
+
+
+
 

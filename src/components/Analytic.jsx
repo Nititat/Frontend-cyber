@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import "../components/css/analytic.css";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance"; // ใช้ axiosInstance แทน axios
+import { DateTime } from "luxon";
+import { getOffsetLeft } from "@mui/material";
 
 const Dashboard = () => {
   const [topIncidents, setTopIncidents] = useState([]);
+  const [selectedDays, setSelectedDays] = useState(200); // ค่าเริ่มต้นเป็น 200 วัน
+  const [selectedDays2, setSelectedDays2] = useState(200); // ค่าเริ่มต้นเป็น 200 วัน
+  const [selectedDays3, setSelectedDays3] = useState(200); // ค่าเริ่มต้นเป็น 200 วัน
+  const [selectedDays4, setSelectedDays4] = useState(200); // ค่าเริ่มต้นเป็น 200 วัน
+  
+
 
   // MITRE Tactic Chart Options
   const [mitreTacticOptions, setMitreTacticOptions] = useState({
     chart: { type: "bar" },
-    colors: ["#03a9f4"],
+    colors: ["#2ecc71"],
     xaxis: { categories: [], labels: { style: { colors: "#fff" } } },
     yaxis: {
       labels: {
@@ -102,29 +110,54 @@ const Dashboard = () => {
   const [realTimeData, setRealTimeData] = useState([
     { name: "Real-Time", data: [] },
   ]);
-
+  
   const realTimeChartOptions = {
     chart: {
       type: "line",
-      animations: { enabled: true, easing: "linear", dynamicAnimation: { speed: 1000 } },
+      animations: {
+        enabled: true,
+        easing: "linear",
+        dynamicAnimation: { speed: 1000 },
+      },
     },
-    stroke: { curve: "smooth", width: 2 },
+    stroke: { 
+      curve: "smooth", 
+      width: 2 
+    },
     xaxis: {
       type: "datetime",
+      tickPlacement: "on", // ให้ tick ของแกน X อยู่ตรงกลาง
       labels: {
         style: { colors: "#fff" },
-        datetimeFormatter: {
-          year: "yyyy",
-          month: "MMM yyyy",
-          day: "dd MMM",
-          hour: "HH:mm", // แสดงชั่วโมงและนาที
+        formatter: function (val) {
+          return DateTime.fromMillis(val).setZone("Asia/Bangkok").toFormat("HH:00"); // แสดงเวลาแบบชั่วโมงเต็ม
+        },
+      },
+      tooltip: {
+        enabled: true,
+        formatter: function (val) {
+          return DateTime.fromMillis(val).setZone("Asia/Bangkok").toFormat("dd MMM HH:00 น."); 
         },
       },
     },
-    
     yaxis: { labels: { style: { colors: "#fff" } } },
+    markers: {
+      size: 5,
+      colors: ["#ff0000"],
+      strokeWidth: 2,
+      hover: { size: 6 },
+    },
     colors: ["#2ecc71"],
   };
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
   useEffect(() => {
@@ -132,11 +165,11 @@ const Dashboard = () => {
       try {
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-mitre-techniques`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-mitre-techniques?days=${selectedDays3}`;
 
         
 
-        const response = await axios.get(API_ENDPOINT);
+        const response = await axiosInstance.get(API_ENDPOINT);
         const data = response.data;
   
         // Extract labels (techniques) and series data (counts)
@@ -163,7 +196,7 @@ const Dashboard = () => {
   
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedDays3]);
   
 
 
@@ -173,11 +206,11 @@ const Dashboard = () => {
       try {
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-agents`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-agents?days=${selectedDays2}`;
 
         
 
-        const response = await axios.get(API_ENDPOINT);
+        const response = await axiosInstance.get(API_ENDPOINT);
         const data = response.data;
         
         // Assuming the API returns data in this format:
@@ -213,7 +246,7 @@ const Dashboard = () => {
   
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedDays2]);
   
 
 
@@ -225,11 +258,11 @@ const Dashboard = () => {
         
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-countries`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-countries?days=${selectedDays}`;
 
         
 
-        const response = await axios.get(API_ENDPOINT);
+        const response = await axiosInstance.get(API_ENDPOINT);
         const data = response.data;
 
         // Extract categories (countries) and series data (counts)
@@ -256,7 +289,7 @@ const Dashboard = () => {
   
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedDays]);
   
 
 
@@ -269,11 +302,11 @@ const Dashboard = () => {
         
         const API_IP = import.meta.env.VITE_API_IP 
         const API_PORT = import.meta.env.VITE_API_PORT 
-        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-techniques`;
+        const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/top-techniques?days=${selectedDays4}`;
 
       
 
-        const response = await axios.get(API_ENDPOINT);
+        const response = await axiosInstance.get(API_ENDPOINT);
         const data = response.data;
         // แปลงข้อมูลจาก API ให้อยู่ในรูปแบบที่ ApexCharts รองรับ
         const chartData = data.map((item) => ({
@@ -298,55 +331,61 @@ const Dashboard = () => {
   
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedDays4]);
   
   
   
 
 
 
+
+  
 
   const fetchRealTimeData = async () => {
     try {
-      // Fetch data from API
-      
-      const API_IP = import.meta.env.VITE_API_IP 
-      const API_PORT = import.meta.env.VITE_API_PORT 
+      const API_IP = import.meta.env.VITE_API_IP;
+      const API_PORT = import.meta.env.VITE_API_PORT;
       const API_ENDPOINT = `https://${API_IP}:${API_PORT}/api/peak-attack-periods`;
-
-      
-
-      const response = await axios.get(API_ENDPOINT);
-      const data = response.data;
-      // Get current time in Thailand (GMT+7)
-      const now = new Date(); // Current local time
-      const thailandNow = new Date(now.getTime() + 7 * 60 * 60 * 1000); // Adjust to GMT+7
   
-      // Format API response into chart-compatible format
+      const response = await axiosInstance.get(API_ENDPOINT);
+      const data = response.data;
+  
+      // แปลง timestamp จาก API ให้เป็นค่า milliseconds ที่พอดีกับ `HH:00`
       const formattedData = data.map((item) => {
-        const utcDate = new Date(item.timestamp); // Convert timestamp to Date object in UTC
-        const thailandDate = new Date(utcDate.getTime() + 7 * 60 * 60 * 1000); // Adjust to GMT+7
+        const dateTime = DateTime.fromISO(item.timestamp, { zone: "Asia/Bangkok" }).startOf("hour"); // ปรับให้เป็นชั่วโมงเต็ม
         return {
-          x: thailandDate, // Use adjusted time
+          x: dateTime.toMillis(), // ใช้ timestamp ที่พอดีกับชั่วโมงเต็ม
           y: item.count,
         };
       });
   
-      // Ensure the latest point matches the current time
-      const latestDataPoint = { x: thailandNow, y: 0 }; // Add a placeholder point for the current time
-      const updatedData = [...formattedData, latestDataPoint].slice(-24); // Include latest point and keep only the last 20
+      console.log("Formatted Data for Chart:", formattedData); // Debug ค่าก่อนส่งให้กราฟ
   
-      setRealTimeData([{ name: "Real-Time", data: updatedData }]);
+      setRealTimeData([
+        {
+          name: "Real-Time",
+          data: formattedData,
+        },
+      ]);
+  
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   
   useEffect(() => {
-    fetchRealTimeData(); // Initial fetch
-    const interval = setInterval(fetchRealTimeData, 1000 * 60); // Fetch data every minute
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    fetchRealTimeData();
+    const interval = setInterval(fetchRealTimeData, 1000 * 60 * 60); // อัปเดตทุก 1 ชั่วโมง
+    return () => clearInterval(interval);
   }, []);
+  
+  
+
+  
+  
+  
+  
+  
   
   
 
@@ -362,7 +401,7 @@ const Dashboard = () => {
 
       
 
-      const response = await axios.get(API_ENDPOINT);
+      const response = await axiosInstance.get(API_ENDPOINT);
       const data = response.data;
       // Format the data to match the required structure
       const formattedData = data.map((item) => ({
@@ -391,64 +430,118 @@ const Dashboard = () => {
 
   return (
       <div className="container-fluid">
+
+
+
+
+
         {/* Top Incidents Table */}
-        <div className="p-3 grid-item-table">
-    <h6> Vulnerability Detection </h6>
-    <table className="table">
-      <thead>
-        
-      </thead>
-      <tbody>
-      <th>Severity</th>
-      <th>Count</th>
-        {topIncidents.map((incident, index) => (
-          <tr key={index}>
-            <td>
-              
-              <span
-                className={`severity-label ${
-                  incident.severity.toLowerCase() // Apply "high", "medium", or "low" class
-                }`}
-              >
-                {incident.severity}
-              </span>
-            </td>
-            <td>{incident.description}</td>
-            
-            
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+<div className="p-3 grid-item-table">
+  <h6> Vulnerability Detection </h6>
+  <table className="table">
+    <thead>
+      <tr>
+        <th>Severity</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {topIncidents.map((incident, index) => (
+        <tr key={index}>
+          <td>
+            <span
+              className={`severity-label ${
+                incident.severity.toLowerCase() // Apply "high", "medium", or "low" class
+              }`}
+            >
+              {incident.severity}
+            </span>
+          </td>
+          <td>{incident.description}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
 
 
       {/* Alerts by MITRE Tactic */}
       <div className="p-3 grid-item-chart">
-        <h6>Top 10 countries that attack the most (200day) </h6>
+        <div className="chart-header">
+          <h6>Top 10 countries that attack the most</h6>
+          <select
+            id="timeRange"
+            value={selectedDays}
+            onChange={(e) => setSelectedDays(Number(e.target.value))}
+          >
+            <option value={1}>Last 1 Day</option>
+            <option value={30}>Last 30 Days</option>
+            <option value={90}>Last 90 Days</option>
+            <option value={200}>Last 200 Days</option>
+          </select>
+        </div>
         <Chart options={mitreTacticOptions} series={mitreTacticData} type="bar" height={300} />
       </div>
 
+
       {/* Top 5 agents */}
       <div className="p-3 grid-item-pie1">
-        <h6>Top 5 agents (200day)</h6>
+        <div className="chart-header">
+        <h6>Top 5 agents </h6>
+        <select
+            id="timeRange"
+            value={selectedDays2}
+            onChange={(e) => setSelectedDays2(Number(e.target.value))}
+          >
+            <option value={1}>Last 1 Day</option>
+            <option value={30}>Last 30 Days</option>
+            <option value={90}>Last 90 Days</option>
+            <option value={200}>Last 200 Days</option>
+          </select>
+        </div>
         <Chart options={severityOptions} series={severityData} type="donut" height={300} />
       </div>
 
       {/* Top 10 MITRE ATT&CKS */}
       <div className="p-3 grid-item-pie2">
-        <h6>Top 10 MITRE ATT&CKS (200day)</h6>
+        <div className="chart-header">
+        <h6>Top 10 MITRE ATT&CKS </h6>
+        <select
+            id="timeRange"
+            value={selectedDays3}
+            onChange={(e) => setSelectedDays3(Number(e.target.value))}
+          >
+            <option value={1}>Last 1 Day</option>
+            <option value={30}>Last 30 Days</option>
+            <option value={90}>Last 90 Days</option>
+            <option value={200}>Last 200 Days</option>
+          </select>
+        </div>
         <Chart options={endpointOptions} series={endpointData} type="donut" height={300} />
       </div>
 
       {/* Incident Timeline Chart */}
       <div className="p-3 grid-item-full">
-      <h6>The top MITRE techniques (7day)</h6>
+      <div className="chart-header">
+      <h6>The top MITRE techniques </h6>
+      <select
+            id="timeRange"
+            value={selectedDays4}
+            onChange={(e) => setSelectedDays4(Number(e.target.value))}
+          >
+            <option value={1}>Last 1 Day</option>
+            <option value={30}>Last 30 Days</option>
+            <option value={90}>Last 90 Days</option>
+            <option value={200}>Last 200 Days</option>
+          </select>
+        </div>
       <Chart options={incidentTimelineOptions} series={incidentTimelineData} type="line" height={300} />
     </div>
 
       {/* Real-Time Chart */}
       <div className="p-3 grid-item-full">
+        
         <h6>RECENT DAILY ATTACKS</h6>
         <Chart options={realTimeChartOptions} series={realTimeData} type="line" height={300} />
       </div>

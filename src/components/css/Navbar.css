@@ -1,23 +1,12 @@
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap');
-
-/* General reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 /* Navbar container */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background: linear-gradient(90deg, #1B213B, #263859);
-  height: 65px;
-
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: #ffffff; /* เปลี่ยนพื้นหลังเป็นสีขาว */
+  height: 55px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ลดความเข้มของเงา */
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -31,22 +20,33 @@
 }
 
 .navbar-logo img {
-  height: 40px;
+  height: 25px;
   width: auto;
 }
 
-.navbar-logo h1 {
-  font-size: 22px;
+.navbar-logo span {
+  font-size: 16px;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000; /* ข้อความสีดำ */
   font-family: 'Roboto', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
-  
-  
 }
 
+/* Title Section */
+.navbar-title {
+  flex-grow: 1;
+  text-align: center;
+}
 
+.navbar-title h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000; /* ข้อความสีดำ */
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  margin: 0;
+}
 
 /* Menu Links */
 .menu {
@@ -58,13 +58,13 @@
 }
 
 .menu a {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  color: #ffffff;
+  color: #000000; /* ข้อความสีดำ */
   padding: 10px 15px;
   border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
   transition: all 0.3s ease;
   position: relative;
 }
@@ -76,13 +76,12 @@
   left: 50%;
   width: 0%;
   height: 2px;
-  background-color: #00bcd4;
+  background-color: #00b359; /* ไฮไลต์สีเขียว */
   transition: width 0.3s ease, left 0.3s ease;
 }
 
 .menu a:hover {
-  color: #00bcd4;
-  background: rgba(0, 188, 212, 0.1);
+  color: #00b359; /* ข้อความสีเขียวเมื่อ hover */
 }
 
 .menu a:hover::after {
@@ -102,4 +101,86 @@
     align-items: center;
     gap: 15px;
   }
+
+  .navbar-title {
+    margin-bottom: 10px;
+  }
+}
+
+/* Styling for the logout link */
+.logout-link {
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+
+/* Navbar.css */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-status {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  margin-top: 1.5px;
+}
+
+.user-status:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-arrow {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  color: #666;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu .logout-button {
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  border: none;
+  background: none;
+  color: #ff4d4f;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu .logout-button:hover {
+  background-color: #fff1f0;
 }

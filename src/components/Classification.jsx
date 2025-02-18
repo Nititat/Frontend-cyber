@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./css/Classification.css";
-import axios from "axios"; // ใช้ Axios สำหรับการดึงข้อมูล
+import axiosInstance from "../utils/axiosInstance"; // ใช้ axiosInstance แทน axios
 import { setupClassificationAnimation } from "./JS/classification_Fun";
 
 function Classification() {
@@ -17,7 +17,7 @@ function Classification() {
 
         
 
-        const response = await axios.get(API_ENDPOINT);
+        const response = await axiosInstance.get(API_ENDPOINT);
 
         const mitreData = response.data;
         console.log("Fetched MITRE techniques:", mitreData);
