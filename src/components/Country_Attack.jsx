@@ -445,7 +445,7 @@ function Country_Attack() {
                     alt={`${country.name} Flag`}
                     className="popup-item-image"
                     onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/50";
+                      e.target.src = "https://placehold.co/50";
                     }}
                   />
                   <div className="popup-item-info">
